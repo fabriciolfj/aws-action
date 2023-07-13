@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "aws-sdk": "2.1055.0",
+    "assert-plus": "1.0.0",
+    "jimp": "0.16.1"
+  },
+  "private": true
+}
