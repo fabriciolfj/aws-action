@@ -11,3 +11,6 @@
 
 ## diferença rede publica com privada
 -  entre uma sub-rede pública e uma privada é que uma sub-rede privada não possui uma rota para o IGW.
+
+## recuperação de maquinas ec2
+ - via cloudwatch podemos configurar uma alarme que se ativo, atendendo a métrica, fará um recover na ec2 vinculada
