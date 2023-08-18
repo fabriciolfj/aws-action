@@ -14,3 +14,30 @@
 
 ## recuperação de maquinas ec2
  - via cloudwatch podemos configurar uma alarme que se ativo, atendendo a métrica, fará um recover na ec2 vinculada
+
+## code deploy
+```
+aws s3 cp etherpad-lite-1.8.17.zip \
+ s3://etherpad-codedeploy-artifactbucket-1o18siq5jec0t/etherpad-lite-1.8.17.zip
+
+
+
+aws deploy create-deployment --application-name etherpad-codedeploy \
+ --deployment-group-name etherpad-codedeploy \
+ --revision "revisionType=S3,
+ s3Location={bucket=etherpad-codedeploy-artifactbucket-1o18siq5jec0t,
+ key=etherpad-lite-1.8.17.zip,bundleType=zip}"
+
+
+
+$ aws deploy create-deployment --application-name etherpad-codedeploy \
+ --deployment-group-name etherpad-codedeploy \
+ --revision "revisionType=S3,
+ s3Location={bucket=etherpad-codedeploy-artifactbucket-1o18siq5jec0t,
+ key=etherpad-lite-1.8.18.zip,bundleType=zip}"
+
+
+aws s3 rm --recursive s3://etherpad-codedeploy-artifactbucket-1o18siq5jec0t
+
+aws cloudformation delete-stack --stack-name etherpad-codedeploy
+```
