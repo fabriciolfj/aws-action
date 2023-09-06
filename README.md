@@ -41,3 +41,10 @@ aws s3 rm --recursive s3://etherpad-codedeploy-artifactbucket-1o18siq5jec0t
 
 aws cloudformation delete-stack --stack-name etherpad-codedeploy
 ```
+
+## ECS
+- cria-se o cluster (pode ter vários services)
+- crio uma definição de tarefa
+- posso ja utilizar a mesma para criar um serviço ou ao criar um serviço selecionar a definição de tarefa
+- indicado que cada serviço seja para uma app
+- veja o serviço como deployment e a tarefa como um pode
