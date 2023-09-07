@@ -48,3 +48,4 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
 - posso ja utilizar a mesma para criar um serviço ou ao criar um serviço selecionar a definição de tarefa
 - indicado que cada serviço seja para uma app
 - veja o serviço como deployment e a tarefa como um pode
+- caso queria adicionar um load balance, precisa criar um novo serviço através de uma task definitions
