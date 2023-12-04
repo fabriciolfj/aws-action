@@ -1,6 +1,53 @@
 # aws-action
 
 ## pontos importantes
+VPC (Virtual Private Cloud) é um recurso importante na AWS para criar redes virtuais privadas. Alguns conceitos:
+
+## VPC
+
+- Permite criar uma rede virtual privada, isolada e configurável dentro da AWS.
+- Nela podemos criar sub-redes e determinar range de IP.
+- Por padrão, as instâncias criadas em uma VPC não são acessíveis publicamente. 
+
+**Sub-redes Públicas x Privadas**
+
+- Sub-redes Públicas: tem uma rota e IP público, permitindo acesso direto à internet. 
+- Sub-redes Privadas: só tem acesso interno, sem IP público direto.
+
+**Tabela de rotas**
+
+- Determina para onde o tráfego de rede será direcionado.
+- Podemos definir rotas customizadas por sub-rede.
+- A sub-rede pública precisa ter uma rota para internet.
+
+**Relação**  
+
+- Uma VPC pode conter uma sub-rede pública E privada
+- As instâncias da sub-rede privada podem acessar a internet saindo pelo NAT da sub-rede pública.
+
+Então o VPC permite criar redes totalmente personalizáveis e segregadas na nuvem.
+
+
+Boa pergunta! Vou explicar melhor sobre NAT e o que quis dizer com "saindo pelo NAT":
+
+## NAT (Network Address Translation)
+
+O NAT é um serviço que permite que máquinas de uma rede interna privada (por exemplo, a sub-rede privada do VPC) se conectem à Internet, sem expor seus endereços IP privados.
+
+Ele faz a "conversão de endereços", traduzindo o IP privado para um IP público, somente quando o tráfego precisar sair para a Internet.
+
+**Saindo pelo NAT** 
+
+O que quis dizer é que, como as instâncias da sub-rede privada não possuem IP público próprio, elas não conseguem se conectar direto na Internet.
+
+Para dar acesso à Internet para essas máquinas, configuramos um NAT na sub-rede pública do VPC.
+
+Assim o tráfego da sub-rede privada será direcionado para o NAT, que fará a tradução de IP, e então sairá para a Internet através do IP público do NAT.
+
+Então elas acessam a Internet "saindo pelo NAT", através desse serviço de tradução de endereço que vive na sub-rede pública.
+
+Espero ter conseguido explicar melhor essa relação! Fique à vontade para perguntar mais alguma coisa.
+
 ### acl
 -  Se você abrir a porta de entrada 80 em um NACL para sua sub-rede, talvez ainda não consiga se conectar via HTTP. Além disso, você precisa permitir portas efêmeras de saída, porque o servidor web aceita conexões na porta 80, mas usa uma porta efêmera para comunicação com o cliente. As portas efêmeras são selecionadas no intervalo que começa em 1024 e termina em 65535. Se você deseja fazer uma conexão HTTP de dentro de sua sub-rede, é necessário abrir a porta de saída 80 e as portas efêmeras de entrada também.
 
