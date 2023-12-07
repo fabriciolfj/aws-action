@@ -104,6 +104,19 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
 ## Resumo para certificação architect associate
 
 ### iam
+- dicas:
+  - não use a conta root, apenas para criar outras contas
+  - não compartilhe credenciais
+  - crie grupos para atribuir permissões
+  - crie politica de password forte
+  - use MFA
+  - crie e use roles para permissões a servços da aws
+  - utilize access keys programatic para cli
+  - para auditoria, temos relatório e access advisor
+  - nunca compartilhe sua conta/credenciais
+ 
+   
+#### role
 - quando criamos uma role, podemos dizer pra qual serviço ela será utilizada
 - especificamos isso no atributo principal, por exemplo:
 ```
