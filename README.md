@@ -99,3 +99,24 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
 - caso queria adicionar um load balance, precisa criar um novo serviço através de uma task definitions
 - dentro da task tenho a imagem no ecr e a porta configurada para o conteiner
 - e esta posso adiciionar as variáveis de ambiente necessárias para minha aplicação
+
+
+## Resumo para certificação architect associate
+
+### iam
+- quando criamos uma role, podemos dizer pra qual serviço ela será utilizada
+- especificamos isso no atributo principal, por exemplo:
+```
+{
+   "Version":"2012-10-17",
+   "Statement":[
+      {
+         "Sid":"Statement1",
+         "Effect":"Allow",
+         "Principal":{
+            "Service":"ec2.amazonaws.com"
+         },
+         "Action":"sts:AssumeRole"
+      }
+   ]
+```
