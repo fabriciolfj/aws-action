@@ -133,3 +133,7 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
       }
    ]
 ```
+
+### Diferença entra host dedicado  e instâncias dedicadas
+- instâncias dedicadas -> você possui sua instância em seu próprio hardware
+- host -> você obtem acesso ao próprio servidor físico
