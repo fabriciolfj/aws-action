@@ -169,3 +169,23 @@ Spot Fleet administra um grupo de Requests e Instances Spot.
 
 O Fleet traz mais automação, balanceamento e confiabilidade no uso de Spot.
 ```
+
+#### spot pools
+```
+O Spot pools é um recurso da AWS para Spot Instances que permite definir um pool de capacidade computacional spot com características específicas de instance type, SO e AZ.
+
+Principais características:
+
+- Permite criar um grupo de instâncias spot com atributos em comum
+- Garante capacidade alvo dentro do pool
+- O pool irá repor automaticamente capacidade se instâncias forem interrompidas
+- Alternativa mais confiável que spots individuais 
+- Tem políticas de allocation para distribuir instâncias
+- Integra com auto scaling groups
+
+O spot pool ajuda a tratar a intermitência das spots, fornecendo um agrupamento mais confiável e com reposição automática.
+
+Dessa forma, aplicações que demandam alta disponibilidade podem se beneficiar de preços spot, contando com o aumento de confiabilidade e consistência do pool.
+
+Então é uma excelente opção para provisionar e gerenciar grupos de spots de modo mais resiliente.
+```
