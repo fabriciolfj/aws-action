@@ -137,3 +137,35 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
 ### Diferença entra host dedicado  e instâncias dedicadas
 - instâncias dedicadas -> você possui sua instância em seu próprio hardware
 - host -> você obtem acesso ao próprio servidor físico
+
+
+### instancias spots
+```
+A diferença entre Spot Instances, Spot Fleets e Spot Requests na AWS é a seguinte:
+
+**Spot Instances** 
+
+- São instâncias EC2 individuais requisitadas diretamente. 
+- Oferecem grandes descontos, mas podem ser interrompidas se o preço máximo definido for ultrapassado.
+
+**Spot Requests**
+
+- São requisições individuais de instâncias Spot. 
+- Cada Spot Request cria uma Spot Instance se tiver capacidade.
+
+**Spot Fleets**
+
+- Permitem criar um grupo de Spot Instances e Spot Requests com diferentes configurações.
+- Balanceia automaticamente a disponibilidade, performance e custo.
+- Requisita Instances para atingir a capacidade definida.
+
+**Resumo**
+
+Spot Request é a requisição individual. 
+
+Spot Instance é a instância em si provisionada.
+
+Spot Fleet administra um grupo de Requests e Instances Spot.
+
+O Fleet traz mais automação, balanceamento e confiabilidade no uso de Spot.
+```
