@@ -189,3 +189,37 @@ Dessa forma, aplicações que demandam alta disponibilidade podem se beneficiar 
 
 Então é uma excelente opção para provisionar e gerenciar grupos de spots de modo mais resiliente.
 ```
+
+#### elastic ip
+- criar um ip publico elastico e estático, onde podemos vincular a uma ec2
+
+
+#### Placement Groups
+Placement Groups (Grupos de Posicionamento) na AWS são um recurso que permite influenciar como as instâncias do EC2 são posicionadas fisicamente nos datacenters da AWS.
+
+Existem 3 estratégias de Placement Group:
+
+**1. Cluster**
+
+- Instâncias posicionadas o mais próximo possível dentro de uma zona de disponibilidade, ideal para cargas de trabalho de alta performance que precisam de baixa latência em rede para comunicação entre nós.
+
+**2. Spread** 
+
+- Instâncias espalhadas por diferentes racks(prateleiras) dentro de uma zona de disponibilidade. Protege contra falhas simultâneas no hardware do rack.
+
+**3. Partition**
+
+- Esparrama instâncias em partições lógicas que refletem os grupos de particionamento do hardware subjacente, como diferentes prateleiras em racks separados.
+
+As vantagens dos Placement Groups:
+
+- Permite influenciar a posição física das instâncias
+- Menor latência em rede entre instâncias no mesmo grupo
+- Isola falhas de hardware
+
+As limitações:
+
+- Nem todos os tipos de instância são compatíveis
+- Uma instância só pode fazer parte de um Placement Group
+
+Então resumindo, Placement Groups são úteis para obter desempenho, isolamento de falhas e controle sobre posicionamento de instâncias.
