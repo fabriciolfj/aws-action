@@ -194,7 +194,7 @@ Então é uma excelente opção para provisionar e gerenciar grupos de spots de 
 - criar um ip publico elastico e estático, onde podemos vincular a uma ec2
 
 
-#### Placement Groups
+## Placement Groups
 Placement Groups (Grupos de Posicionamento) na AWS são um recurso que permite influenciar como as instâncias do EC2 são posicionadas fisicamente nos datacenters da AWS.
 
 Existem 3 estratégias de Placement Group:
