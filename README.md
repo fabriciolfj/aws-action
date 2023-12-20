@@ -223,3 +223,31 @@ As limitações:
 - Uma instância só pode fazer parte de um Placement Group
 
 Então resumindo, Placement Groups são úteis para obter desempenho, isolamento de falhas e controle sobre posicionamento de instâncias.
+
+## ENI
+
+ENI (Elastic Network Interface) é um recurso da AWS que permite criar interfaces de rede virtuais e gerenciá-las de forma independente das instâncias EC2.
+
+Principais características:
+
+- Uma ENI é uma interface de rede virtual que você pode criar, conectar e desconectar de instâncias EC2.
+
+- É alocada privadamente a uma subnet em uma VPC (Virtual Private Cloud). 
+
+- Tem um IP privado primário na subnet, e pode ter um ou mais IPs secundários.
+
+- Pode ser conectada ou desacoplada de uma instância EC2 no mesmo AZ.
+
+- Retém todos os seus atributos quando desconectada, podendo ser reconectada a outra instância.
+
+- Suporta segurança e diversos tipos de tráfego de rede por meio de grupos de segurança e ACLs.
+
+- Permite criar designs de rede mais flexíveis com balanceamento de carga e failover.
+
+As ENIs são úteis quando você precisa:
+
+- Reassociar rapidamente endereços IP privados a outra instância.
+- Implementar configurações de rede complexas em instâncias.
+- Usar configurações consistentes ao migrar instâncias para novos servidores.  
+
+Então o Elastic Network Interface habilita cenários avançados de rede no EC2.
