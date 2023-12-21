@@ -202,14 +202,19 @@ Existem 3 estratégias de Placement Group:
 **1. Cluster**
 
 - Instâncias posicionadas o mais próximo possível dentro de uma zona de disponibilidade, ideal para cargas de trabalho de alta performance que precisam de baixa latência em rede para comunicação entre nós.
+  - indicado para aplicações que precisam de baixa latência, pois estão dentro do mesmo rack
+  - indicados para bigdatas
 
 **2. Spread** 
 
-- Instâncias espalhadas por diferentes racks(prateleiras) dentro de uma zona de disponibilidade. Protege contra falhas simultâneas no hardware do rack.
+- Instâncias espalhadas por diferentes racks(prateleiras) que podem estar em diferentes zonas de disponibilidade. Protege contra falhas simultâneas no hardware do rack.
+  - indicado para aplicações que precisam de alta disponibilidade, com failover
 
 **3. Partition**
 
-- Esparrama instâncias em partições lógicas que refletem os grupos de particionamento do hardware subjacente, como diferentes prateleiras em racks separados.
+- Esparrama instâncias em partições lógicas que refletem os grupos de particionamento do hardware subjacente, como diferentes prateleiras em racks separados e em diferentes azs.
+  -  limita em 7 partições por az
+  -  indicados para aplicações distribuidas, como cassandra, redis, banco de dados distribuídos
 
 As vantagens dos Placement Groups:
 
@@ -251,3 +256,27 @@ As ENIs são úteis quando você precisa:
 - Usar configurações consistentes ao migrar instâncias para novos servidores.  
 
 Então o Elastic Network Interface habilita cenários avançados de rede no EC2.
+
+
+## Hibernação maquinas ec2
+O hibernate para instâncias EC2 permite "suspender" e "retomar" a execução de uma instância. Isso diferencia do stop/start tradicional.
+
+Algumas características:
+
+- Ao hibernar, o estado da memória RAM é salvo em disco na própria instância.
+
+- O estado da memória é restaurado quando a instância é retomada, junto com processos em execução.
+
+- É muito mais rápido que desligar e religar a instância.
+
+- A instância vai para o estado "stopped" e não incide cobranças de uso.
+
+- Somente instâncias com root volume EBS podem ser hibernadas, instâncias com instance store não.
+
+- Instâncias grandes (m4.16xlarge ou superior) não suportam hibernação.
+
+- Tipos de instâncias mais antigos, como T2, também não suportam.
+
+Então o hibernate permite suspender e depois quickly resumir instâncias, sem perder estado.
+
+É ideal para ambientes de teste/dev onde máquinas não precisam ficar sempre ligadas, economizando custos. Também agiliza inicialização de grandes aplicações.
