@@ -280,3 +280,64 @@ Algumas características:
 Então o hibernate permite suspender e depois quickly resumir instâncias, sem perder estado.
 
 É ideal para ambientes de teste/dev onde máquinas não precisam ficar sempre ligadas, economizando custos. Também agiliza inicialização de grandes aplicações.
+
+
+## EBS (elastic block store)
+Amazon EBS (Elastic Block Store) é um serviço de armazenamento em bloco que pode ser anexado às instâncias EC2 como dispositivos de armazenamento.
+
+Principais características:
+
+- Armazenamento persistente e de alto desempenho que pode ser anexado às instâncias.
+  -  instnâncias que estejam na mesmoa az do ebs
+  -  IOPS (Input/Output Operations Per Second) é uma métrica que mede o desempenho de dispositivos de armazenamento, indicando quantas operações de entrada/saída o dispositivo pode processar por segundo. 
+- Permiten criar sistemas de arquivo ou até usar como raw block devices.
+- Os dados armazenados são replicados para alta disponibilidade e durabilidade.
+- Vários tipos para casos de uso específicos: SSD para alto desempenho, HDD para data warehousing, magnéticos para custo e outros. 
+- Integram com snapshots para fazer backups pontuais que podem ser restaurados em qualquer zona de disponibilidade.
+
+Vantagens sobre armazenamento instance-store:
+
+- Persistência independentemente do ciclo de vida da instância
+- Flexibilidade de mudar tipos de instância mantendo o mesmo armazenamento
+- Migração de dados entre zonas de disponibilidade
+
+Portanto o EBS fornece armazenamento de alto desempenho e custo eficiente para usar com instâncias EC2. A persistência permite designs mais resilientes.
+
+
+### Diferença entre iops e taxa de transfefência
+Ótima pergunta! A principal diferença entre IOPS e taxa de transferência (throughput) para volumes de armazenamento é:
+
+**IOPS -** 
+- Mede o número de operações de entrada/saída por segundo, como gravações, leituras, exclusões, etc. 
+- Metrica a capacidade de realizar um grande número de operações pequenas e aleatórias.
+- Importante para bancos de dados OLTP, onde o desempenho depende mais de IOPS.
+
+**Taxa de Transferência -**
+- Mede o volume total de dados que podem ser lidos/gravados por segundo, normalmente em MB/s.
+- Indicativo da capacidade de sustentar transferências maciças sequenciais de dados. 
+- Mais relevante para cargas analíticas/Big Data como data warehouses.
+
+Em resumo:
+
+- **IOPS:** quantidades de operações I/O por segundo, leituras e gravações pequenas e aleatórias.
+
+- **Throughput:** volume total de dados transferidos por segundo, fluxos sequenciais de dados.
+
+Tipos de armazenamento podem ter IOPS alto e throughput baixo ou vice-versa. Importante dimensionar com base na carga de trabalho específica.
+
+Entendido como as duas métricas complementares? Fique à vontade para perguntar mais!
+
+### Ebs snapshots
+- são backups do ebs
+- podemos gerar o bkp de um ebs de uma az e restaurar em outra az
+- podemos copiar os snapshots para outras az
+
+#### Features do ebs snapshots
+- ebs snapshot archive -> mais barato, leva mais tempo para ser restaurado
+- ebs snapshot recycle -> funciona como a lixeira do windows, caso dele um ebs por engano, ele vai para lixeira e fica por um tempo configuravél
+- fast snapshot restore -> o mais caro, restaura instantaneamente o backup para uso
+
+## AMI (amazon machine image)
+-  ami -> usado para customizar instancias ec2
+-  criamos com base em uma ec2 ja sendo executada
+-  posso comprar ami do marketplace
