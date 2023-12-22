@@ -425,3 +425,28 @@ Alguns pontos de atenção nessa relação EBS x EC2:
 Então essa relaçãoEC2 x EBS precisa ser observada em conjunto - o desempenho final será determinado pelo elo mais fraco.
 
 Monitorando métricas como filas de disco, IOPS consumida e latência temos visibilidade dessa relação.
+
+## Ebs multi-attach
+- permite anexar o voluem ebs a mais de uma ecs na mesma zona de disponibilidade
+- se limita a 16 instâncias
+
+## criptografica ebs
+- quando criamos um ebs e marcamos ele para usar criptografia, todo o processo (encriptar/decriptar) e transparente pra nós
+- utiliza chaves kms (aes-256)
+- problema ocorre quando queremos encriptar um ebs que não foi encriptado
+  - precisamos criar um snapshot do ebs
+  - copiamos ele e marcamos para encriptar
+  - criamos um volume a partir dele
+ 
+## amazon efs (elastic file system)
+- sistem de arquivos em rede, montando em instâncias ec2
+- ele fica disponivel em multiaz
+- ami tem que ser linux
+- uso:
+```
+O EFS é ideal para armazenar arquivos grandes, como vídeos, imagens e arquivos de áudio. Ele pode lidar com arquivos de até 50 TB, tornando-o uma ótima opção para empresas com grandes conjuntos de dados.
+* **Armazenamento de dados não estruturados:** O EFS também é uma boa opção para armazenar dados não estruturados, como logs, dados de eventos e dados de sensores. Esses tipos de dados não são armazenados em um formato específico, o que os torna difíceis de armazenar e gerenciar em sistemas de arquivos tradicionais. O EFS é projetado para armazenar dados não estruturados e pode facilmente lidar com esse tipo de dado.
+* **Armazenamento de dados de aplicativos:** O EFS pode ser usado para armazenar dados de aplicativos, como bancos de dados, arquivos de configuração e arquivos de mídia. Isso pode ajudar a melhorar o desempenho dos aplicativos e facilitar o gerenciamento dos dados.
+* **Backup e recuperação:** O EFS pode ser usado para fazer backup de dados de outros sistemas de arquivos ou dispositivos. Isso pode ajudar a proteger os dados no caso de perda de dados ou falha do sistema. O EFS também pode ser usado para recuperar dados perdidos ou corrompidos.
+* **Compartilhamento de arquivos:** O EFS pode ser usado para compartilhar arquivos entre diferentes usuários ou grupos. Isso pode ajudar a melhorar a colaboração e a produtividade.
+```
