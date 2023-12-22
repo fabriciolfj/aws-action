@@ -341,3 +341,87 @@ Entendido como as duas métricas complementares? Fique à vontade para perguntar
 -  ami -> usado para customizar instancias ec2
 -  criamos com base em uma ec2 ja sendo executada
 -  posso comprar ami do marketplace
+
+## tipos ebs
+Os principais tipos de volumes EBS (Elastic Block Store) da AWS são:
+
+**SSD gp3**
+- Uso geral, balanceado entre preço e performance
+- IOPS a partir de 3000 por volume
+- Taxa de transferência de 125 MiB/s a 1000 MiB/s
+
+**SSD io2** 
+- Alto desempenho, sensível a latência  
+- IOPS entre 100 e 64000 (nível de SSD)
+- Taxa de transferência de 100 MiB/s a 1000 MiB/s
+
+**SSD io1**
+- Desempenho muito alto 
+- IOPS entre 100 e 64000 
+- Taxa de transferência máxima de 1000 MiB/s
+
+**HDD gp2**
+- Uso geral
+- IOPS baseline de 100
+- Taxas de transferência de 125 MiB/s
+- Menor custo
+
+**HDD st1** 
+- Otimizadas para throughput, dados sequenciais
+- Streaming de dados, data warehouses
+- Taxa de transferência de 500 MiB/s
+  
+**HDD sc1**
+- Taxas de transferência baixas
+- Dados com acesso pouco frequente
+
+## tipo ec2
+A AWS oferece uma ampla gama de tipos de instâncias EC2 para atender a diferentes casos de uso e requisitos. Os principais são:
+
+**Uso Geral**
+- M5, M6 - balanceado entre CPU, memória e rede
+- T3, T4 - recursos expansíveis na nuvem
+
+**Computação Otimizada** 
+- C5, C6 - alto desempenho CPU e rede
+- C7 - custo otimizado e ARM
+
+**Memória Otimizada**
+- R5, R6, X2 - muito alta memória e armazenamento 
+
+**Armazenamento Otimizado**
+- D2, D3 - alto throughput, baixa latência
+- H1 - throughput altíssimo sequencial
+
+**GPU Compute**
+- G4, P4 - alta capacidade GPU, machine learning
+  
+**Otimizado F1**
+- FPGA, lógica programável
+
+Algumas instâncias também possuem características especiais como zonas locais, confidencialidade de dados, tolerância a falhas e muito mais.
+
+Recomenda-se escolher o tipo com base no perfil da aplicação, benchmark de desempenho e análise de custo. Monitoramento contínuo também é recomendado.
+
+Fique à vontade para perguntar sobre qualquer tipo ou caso de uso específico!
+
+## tipos ec2 x ebs
+Exato! Para tirar proveito total do desempenho de volumes EBS de alto nível, é importante ter instâncias EC2 adequadas.
+
+Alguns pontos de atenção nessa relação EBS x EC2:
+
+- Instâncias têm limites de IOPS e throughput que conseguem sustentar. Um EBS muito rápido não adianta se a EC2 não der vazão.
+
+- Utilizar instâncias com bons perfis de rede e armazenamento como M5, C5 ou R5 para renderizar alto desempenho de EBS.
+
+- Dimensionar aInstância para ter memória e CPU suficientes para alimentar o armazenamento.
+
+- Combinar instâncias otimizadas para EBS como D3/D3en com EBS Provisioned IOPS para latência muito baixa.
+
+- Testar benchmark da aplicação e identificar gargalos (bottlenecks).
+
+- Escalar horizontalmente com um auto scaling group pode dividir a carga por mais nós.
+
+Então essa relaçãoEC2 x EBS precisa ser observada em conjunto - o desempenho final será determinado pelo elo mais fraco.
+
+Monitorando métricas como filas de disco, IOPS consumida e latência temos visibilidade dessa relação.
