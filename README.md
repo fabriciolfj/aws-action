@@ -456,12 +456,12 @@ A principal diferença entre EBS (Elastic Block Store) e EFS (Elastic File Syste
 
 **EBS**
 - Discos de bloco em blocos para EC2 (instâncias virtuais).
-- Anexado a somente uma instância por vez.
+- Anexado a somente uma instância por vez (alguns tipos podem ter o recurso multi attach).
 - Maior performance em leitura/gravação.
 - Snapshot possível para backup.
 
 **EFS** 
-- Sistema de arquivos escalável para ser usado entre várias instâncias.
+- Sistema de arquivos escalável para ser usado entre várias instâncias (multi az)
 - Pode ser montado simultaneamente em milhares de instâncias EC2.
 - Performance mais baixa que EBS.
 - Mais indicado para cenários de acesso simultâneo.
