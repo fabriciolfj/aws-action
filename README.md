@@ -450,3 +450,25 @@ O EFS é ideal para armazenar arquivos grandes, como vídeos, imagens e arquivos
 * **Backup e recuperação:** O EFS pode ser usado para fazer backup de dados de outros sistemas de arquivos ou dispositivos. Isso pode ajudar a proteger os dados no caso de perda de dados ou falha do sistema. O EFS também pode ser usado para recuperar dados perdidos ou corrompidos.
 * **Compartilhamento de arquivos:** O EFS pode ser usado para compartilhar arquivos entre diferentes usuários ou grupos. Isso pode ajudar a melhorar a colaboração e a produtividade.
 ```
+
+## diferenca entre ebs e efs
+A principal diferença entre EBS (Elastic Block Store) e EFS (Elastic File System) na AWS é:
+
+**EBS**
+- Discos de bloco em blocos para EC2 (instâncias virtuais).
+- Anexado a somente uma instância por vez.
+- Maior performance em leitura/gravação.
+- Snapshot possível para backup.
+
+**EFS** 
+- Sistema de arquivos escalável para ser usado entre várias instâncias.
+- Pode ser montado simultaneamente em milhares de instâncias EC2.
+- Performance mais baixa que EBS.
+- Mais indicado para cenários de acesso simultâneo.
+
+Resumindo:
+
+- EBS é disco rígido em blocos para uma instância EC2. 
+- EFS é file system flexível e paralelo para múltiplas instâncias.
+
+Enquanto EBS é privado para uma instância, EFS permite o compartilhamento de arquivos entre várias máquinas.
