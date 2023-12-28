@@ -466,6 +466,24 @@ A principal diferença entre EBS (Elastic Block Store) e EFS (Elastic File Syste
 - Performance mais baixa que EBS.
 - Mais indicado para cenários de acesso simultâneo.
 
+## ecs instancia store
+```
+O ECS Instance Store é um tipo especial de armazenamento disponível para alguns tipos de instâncias do Amazon EC2 usadas em clusters do Amazon ECS (Elastic Container Service).
+
+Principais características:
+
+- Armazenamento efêmero anexado fisicamente à instância do EC2. 
+- Fornece alta performance de I/O, com baixa latência.
+- Os dados não são persistidos quando a instância para/falha.
+- Útil para buffer, cache, escrita temporária.
+
+Como é anexado fisicamente ao servidor, o ECS Instance Store permite performance de leitura/gravação muito alta em comparação a volumes EBS. Porém os seus dados só existem enquanto a instância está em execução.
+
+Por esse motivo, ele é mais indicado para dados temporários e buffer/cache. Já os volumes EBS permitem persistência dos dados, são desanexados da vida da instância.
+
+Então em resumo, o ECS Instance Store provê armazenamento temporário de alto desempenho específico para instâncias usadas em clusters do serviço ECS da AWS.
+```
+
 Resumindo:
 
 - EBS é disco rígido em blocos para uma instância EC2. 
