@@ -515,3 +515,44 @@ Então em resumo, os tipos SSD (gp2, gp3, io1 e io2) podem ser boot volumes, os 
 ```
 
 # Escalabilidade
+
+## load balance
+- um servidor ou servidores, que rediciona uma requisição a uma ec2 ou destino
+- ele vai balanceando as requisições para não sobrecarregar um destino
+- ele verifique a saude do destino, caso esteja respondendo, ele poderá receber a requisioção, ao contrário não.
+
+### tipos load balance
+```
+Os principais tipos de load balancers na AWS para distribuir tráfego entre instâncias são:
+
+**Application Load Balancer (ALB)**
+
+- Balanceamento em nível de aplicação (HTTP/HTTPS). 
+- Suporta paths e hosts de rotas para serviços.
+- Tem recursos avançados como auth, SSL, logs.
+- Indicado para aplicações web serviço-orientadas.
+
+**Network Load Balancer (NLB)** 
+
+- Balanceamento em nível de conexão TCP.
+- Latência extremamente baixa e alto throughput .
+- Usa para tráfego muito intenso não HTTP ou interconectar serviços.
+
+**Classic Load Balancer** 
+
+- Balanceador legado com menos recursos. 
+- Possui suporte a camadas Classic do EC2.
+
+**Gateway Load Balancer**
+
+- Novo, permite escalar para milhões de requests por segundo usando GENEVE.
+- Para aplicações extremamente intensas e cluster de containers.
+
+
+Alguns fatores para decidir:
+
+- Regra geral, prefira ALB ou NLB para novos serviços. 
+- ALB para maioria dos casos de HTTP/HTTPS.
+- NLB quando precisar reduzir latência ao máximo.
+- Gateway para cargas inimaginavelmente grandes.
+```
