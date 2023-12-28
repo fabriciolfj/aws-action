@@ -456,7 +456,7 @@ A principal diferença entre EBS (Elastic Block Store) e EFS (Elastic File Syste
 
 **EBS**
 - Discos de bloco em blocos para EC2 (instâncias virtuais).
-- Anexado a somente uma instância por vez (alguns tipos podem ter o recurso multi attach).
+- Anexado a somente uma instância por vez (alguns tipos podem ter o recurso multi attach, mas não e multi az).
 - Maior performance em leitura/gravação.
 - Snapshot possível para backup.
 
@@ -472,3 +472,26 @@ Resumindo:
 - EFS é file system flexível e paralelo para múltiplas instâncias.
 
 Enquanto EBS é privado para uma instância, EFS permite o compartilhamento de arquivos entre várias máquinas.
+
+
+## Questões
+```
+Qual dos seguintes tipos de volume do EBS pode ser usado como volumes de inicialização ao criar instâncias do EC2?
+
+Os tipos de volumes EBS que podem ser usados como volumes de inicialização para instâncias EC2 são:
+
+- gp2 (SSD General Purpose): volume de SSD balanceado em relação a preço e performance. É o tipo mais utilizado para a maioria das cargas de trabalho.
+
+- gp3 (SSD General Purpose): similar ao gp2, mas permite ajustar a performance de IOPS e throughput de modo independente.
+
+- io1 (SSD Provisioned IOPS): SSD de alto desempenho para cargas de trabalho sensíveis à latência, como bancos de dados.
+
+- io2 (SSD Provisioned IOPS): nova geração do io1 com melhor eficiência econômica.
+
+Portanto, gp2, gp3, io1 e io2 são os tipos que suportam volumes de inicialização para instâncias EC2.
+
+Já os volumes magnéticos padrão (st1 e sc1) e o volume de throughput elevado (st1), não podem ser usados para inicialização. Apenas para dados.
+
+Então em resumo, os tipos SSD (gp2, gp3, io1 e io2) podem ser boot volumes, os tipos magnéticos/throughput não.
+
+```
