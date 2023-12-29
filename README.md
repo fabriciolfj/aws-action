@@ -547,7 +547,7 @@ Os principais tipos de load balancers na AWS para distribuir tráfego entre inst
 
 - Novo, permite escalar para milhões de requests por segundo usando GENEVE.
 - Para aplicações extremamente intensas e cluster de containers.
-
+- aplica firewall, mais segurança e etc
 
 Alguns fatores para decidir:
 
