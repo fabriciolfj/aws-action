@@ -542,6 +542,7 @@ Os principais tipos de load balancers na AWS para distribuir tráfego entre inst
 - Balanceamento em nível de conexão TCP.
 - Latência extremamente baixa e alto throughput .
 - Usa para tráfego muito intenso não HTTP ou interconectar serviços.
+- para o health check, suporta os protocolos http, tcp e https.
 
 **Classic Load Balancer** 
 
@@ -560,4 +561,22 @@ Alguns fatores para decidir:
 - ALB para maioria dos casos de HTTP/HTTPS.
 - NLB quando precisar reduzir latência ao máximo.
 - Gateway para cargas inimaginavelmente grandes.
+```
+
+
+### sitcky sessions
+```
+Sticky sessions no Elastic Load Balancer (ELB) da AWS são uma forma de vinculação de sessão entre um cliente e um servidor específico atrás de um balanceador de carga. Aqui estão alguns detalhes importantes sobre sticky sessions no ELB da AWS:
+
+- Elas permitem que requests de um cliente sejam roteados para o mesmo servidor behind o ELB para toda a duração da sessão. Isso é útil para aplicações web que armazenam informações de sessão no servidor.
+
+- As sticky sessions são habilitadas definindo o atributo de stickiness no listener do ELB. Você pode habilitar o stickiness baseado em cookies ou na porta da origem.
+
+- Ao usar stickiness baseada em cookies, o ELB insere um cookie de sessão especial que vincula subsequentes requests do mesmo cliente ao mesmo servidor.
+
+- Com a stickiness baseada na porta da origem, o ELB gera uma porta aleatória para cada servidor e mapeia requests de um cliente para essa porta para garantir eles vão para o mesmo servidor.
+
+- As sticky sessions são úteis para estado de sessão, mas podem causar desequilíbrio de carga se um servidor receber significativamente mais tráfego. É importante dimensionar adequadamente.
+
+- Recomenda-se habilitar sticky sessions somente quando necessário, pois elas limitam a capacidade de escalabilidade e balanceamento de carga do ELB.
 ```
