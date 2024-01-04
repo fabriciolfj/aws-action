@@ -580,3 +580,22 @@ Sticky sessions no Elastic Load Balancer (ELB) da AWS são uma forma de vincula�
 
 - Recomenda-se habilitar sticky sessions somente quando necessário, pois elas limitam a capacidade de escalabilidade e balanceamento de carga do ELB.
 ```
+
+### cross zone load balance
+```
+O cross-zone load balancing é um recurso importante dos Elastic Load Balancers (ELBs) na AWS. Aqui estão alguns detalhes-chave:
+
+- Por padrão, o ELB distribui o tráfego de entrada igualmente entre as zonas de disponibilidade que estão habilitadas. Isso pode causar desequilíbrio se você tiver mais instâncias do seu auto scaling group em algumas zonas.
+
+- Habilitar o cross-zone load balancing faz com que o ELB distribua o tráfego uniformemente entre todas as instâncias registradas, independentemente da zona de disponibilidade.
+
+- Isso é muito útil para equalizar a carga em seus recursos em todas as zonas disponíveis. Elimina o problema de "zonas quentes", onde algumas zonas recebem muito mais tráfego do que outras.
+
+- É altamente recomendado habilitar o cross-zone load balancing para aplicações de missão crítica que exigem alta disponibilidade e tolerância a falhas.
+
+- Há uma pequena cobrança adicional por tráfego entre zonas com o cross-zone load balancing habilitado. Mas na maioria dos casos o benefício supera esse custo extra.
+
+- Não há desvantagem significativa em habilitá-lo. A latência entre zonas é normalmente muito baixa para causar problemas.
+
+Em resumo, habilitar o cross-zone load balancing ajuda a igualar a distribuição de carga, evita zonas quentes e melhorar a disponibilidade geral. É considerada uma best practice para a maioria das implantações.
+```
