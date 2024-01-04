@@ -601,3 +601,37 @@ Em resumo, habilitar o cross-zone load balancing ajuda a igualar a distribuiçã
 ```
 - para alb é aplicada por default ao cross zone
 - ja para nlb e glb, não é ativa, e caso ative, tem uma cobrança adicional
+
+### sni
+```
+SNI (Server Name Indication) é uma extensão de segurança do protocolo TLS (Transport Layer Security) que permite que vários certificados SSL sejam servidos do mesmo endereço IP e porta.
+
+Aqui estão algumas informações importantes sobre SNI:
+
+- Sem SNI, um servidor só pode hospedar um certificado SSL por endereço IP e porta. Isso porque o certificado é negociado no início da "handshake" TLS, antes que o hostname seja conhecido.
+
+- SNI resolve esse problema enviando o hostname que o cliente está tentando acessar no início do processo de "handshake", permitindo que o servidor apresente o certificado SSL correto para esse domínio.
+
+- Isso permite hospedar vários sites com SSL offload no mesmo endereço IP e mesmo load balancer, como é comum em implantações de larga escala na cloud.
+
+- O SNI é amplamente adotado e suportado pela maioria dos navegadores modernos e bibliotecas de software. No entanto, alguns clientes antigos não suportam.
+
+- Se um cliente não suportar SNI, a conexão irá falhar ou será apresentado um certificado padrão. Portanto o SNI ainda requer algum planejamento.
+```
+
+### handshake
+```
+Em resumo, o SNI é crucial para escalar implantações de terminação TLS que precisam suportar vários certificados SSL no mesmo endereço IP. É uma extensão importante para segurança e desempenho na cloud.
+
+Handshake, em português "aperto de mãos", é um termo usado em redes de computadores e segurança que se refere ao processo inicial de estabelecimento de uma conexão entre duas entidades. 
+
+Alguns exemplos de handshake em diferentes protocolos e tecnologias:
+
+- TCP handshake: É o processo de estabelecer uma conexão TCP entre dois dispositivos. Consiste em uma troca de três mensagens (SYN, SYN-ACK, ACK) para sincronizar os números de sequência e permitir a comunicação.
+
+- SSL/TLS handshake: É o processo pelo qual um cliente e servidor negociam os detalhes de criptografia e estabelecem uma conexão segura. Envolve várias etapas como negociação de versão do protocolo, seleção de conjunto de criptografia, autenticação do servidor e/ou cliente com certificados digitais, etc.
+
+- WebSocket handshake: É o processo pelo qual o protocolo WebSocket atualiza uma conexão HTTP comum para uma conexão WebSocket, permitindo comunicação bidirecional em tempo real.
+
+Em resumo, o termo handshake refere-se a esse processo inicial crucial de duas entidades se reconhecerem e sincronizarem para estabelecer um canal seguro de comunicação antes de efetivamente trocarem dados. Conforme a tecnologia, diferentes passos são necessários para garantir uma conexão confiável.
+```
