@@ -599,3 +599,5 @@ O cross-zone load balancing é um recurso importante dos Elastic Load Balancers 
 
 Em resumo, habilitar o cross-zone load balancing ajuda a igualar a distribuição de carga, evita zonas quentes e melhorar a disponibilidade geral. É considerada uma best practice para a maioria das implantações.
 ```
+- para alb é aplicada por default ao cross zone
+- ja para nlb e glb, não é ativa, e caso ative, tem uma cobrança adicional
