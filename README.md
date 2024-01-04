@@ -635,3 +635,23 @@ Alguns exemplos de handshake em diferentes protocolos e tecnologias:
 
 Em resumo, o termo handshake refere-se a esse processo inicial crucial de duas entidades se reconhecerem e sincronizarem para estabelecer um canal seguro de comunicação antes de efetivamente trocarem dados. Conforme a tecnologia, diferentes passos são necessários para garantir uma conexão confiável.
 ```
+
+### connection draining
+```
+Connection draining é uma função importante provida pelos Elastic Load Balancers (ELBs) da Amazon Web Services (AWS) para graciosamente remover instâncias do serviço.
+
+Quando você remove uma instância do seu Auto Scaling Group, o ELB pára de enviar novas conexões para essa instância, mas as conexões existentes podem ser interrompidas abruptamente.
+
+O connection draining resolve isso garantindo que as requisições existentes terminem gracefully antes de remover a instância de serviço. Aqui estão mais detalhes:
+
+- Você define por quanto tempo o ELB deve drenar as conexões existentes antes de completar a remoção da instância. Isso é configurado em segundos.
+
+- Durante esse período de draining, o ELB não envia novas requisições para a instância, mas permite que requisições existentes sejam concluídas normalmente.
+
+- Isso evita a interrupção abrupta de downloads, transações ou outros trabalhos em andamento que poderiam afetar negativamente o usuário.
+
+- Quando o período definido expira, então o ELB para de enviar até mesmo as conexões existentes para aquela instância.
+
+Habilitar o connection draining é considerado uma boa prática ao criar Auto Scaling groups com Elastic Load Balancers para garantir graceful shutdowns.
+
+```
