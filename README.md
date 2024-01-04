@@ -655,3 +655,9 @@ O connection draining resolve isso garantindo que as requisições existentes te
 Habilitar o connection draining é considerado uma boa prática ao criar Auto Scaling groups com Elastic Load Balancers para garantir graceful shutdowns.
 
 ```
+
+### asg (auto scaling group)
+- uma forma de escalonar horizontalmente nossas ec2
+- definimos um número minimo, deseja e máximo de instancias
+- o load balance utiliza as ec2 criadas pelo asg
+- usamos as trigger do cloudwatch (alarmes), para saber quando aumentar as instancias por exemplo
