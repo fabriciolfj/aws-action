@@ -661,3 +661,7 @@ Habilitar o connection draining é considerado uma boa prática ao criar Auto Sc
 - definimos um número minimo, deseja e máximo de instancias
 - o load balance utiliza as ec2 criadas pelo asg
 - usamos as trigger do cloudwatch (alarmes), para saber quando aumentar as instancias por exemplo
+- etapas para criação:
+  - crie um template
+  - crie o asg, vinculando a um target group
+  - vincule o tg no seu alb 
