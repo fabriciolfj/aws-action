@@ -620,12 +620,11 @@ Aqui estão algumas informações importantes sobre SNI:
 - O SNI é amplamente adotado e suportado pela maioria dos navegadores modernos e bibliotecas de software. No entanto, alguns clientes antigos não suportam.
 
 - Se um cliente não suportar SNI, a conexão irá falhar ou será apresentado um certificado padrão. Portanto o SNI ainda requer algum planejamento.
+Em resumo, o SNI é crucial para escalar implantações de terminação TLS que precisam suportar vários certificados SSL no mesmo endereço IP. É uma extensão importante para segurança e desempenho na cloud.
 ```
 
 ### handshake
 ```
-Em resumo, o SNI é crucial para escalar implantações de terminação TLS que precisam suportar vários certificados SSL no mesmo endereço IP. É uma extensão importante para segurança e desempenho na cloud.
-
 Handshake, em português "aperto de mãos", é um termo usado em redes de computadores e segurança que se refere ao processo inicial de estabelecimento de uma conexão entre duas entidades. 
 
 Alguns exemplos de handshake em diferentes protocolos e tecnologias:
