@@ -526,7 +526,7 @@ Então em resumo, os tipos SSD (gp2, gp3, io1 e io2) podem ser boot volumes, os 
   - dentro do target, podemos colocar algumas regras, como rota, cabeçalho http, host
   - crie o load balance e vincule o target group
 - Ao usar um Application Load Balancer para distribuir tráfego para suas instâncias EC2, o endereço IP do qual você receberá solicitações serão os endereços IP privados do ALB. Para obter o endereço IP do cliente, o ALB adiciona um cabeçalho adicional chamado "X-Forwarded-For" que contém o endereço IP do cliente.
-
+- Os ALBs podem rotear o tráfego para diferentes grupos-alvo com base no caminho da URL, nome do host, cabeçalhos HTTP e strings de consulta.
 ### tipos load balance
 ```
 Os principais tipos de load balancers na AWS para distribuir tráfego entre instâncias são:
