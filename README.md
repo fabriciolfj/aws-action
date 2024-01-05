@@ -664,4 +664,53 @@ Habilitar o connection draining é considerado uma boa prática ao criar Auto Sc
 - etapas para criação:
   - crie um template
   - crie o asg, vinculando a um target group
-  - vincule o tg no seu alb 
+  - vincule o tg no seu alb
+ 
+### politicas de asg
+```
+Existem vários tipos de políticas de escalabilidade automática na AWS que podemos usar com Auto Scaling groups:
+
+Target Tracking Scaling:
+- Escala automaticamente para manter uma métrica específica em um determinado valor alvo. Por exemplo, manter a CPU em 40%.
+- Não requer configuração complexa de alarmes.
+- Responde continuamente a flutuações na métrica.
+
+Simple/Step Scaling:  
+- Escala com base em alarmes do CloudWatch associados a métricas. 
+- Permite adicionar ou remover uma quantidade fixa de capacidade.
+
+Scheduled Actions:
+- Escala a capacidade de acordo com uma agenda recorrente, antecipando mudanças de tráfego. 
+- Útil para flutuações previsíveis.
+
+Predictive Scaling:
+- Usa machine learning para prever o tráfego futuro com base em padrões históricos.
+- Inicia o scale antes que a métrica exceda o limite para manter desempenho.
+
+Em resumo, podemos combinar vários tipos de políticas de escala para obter controle refinado sobre o scale up/down automático em resposta tanto ao tráfego ao vivo quanto a padrões históricos. Isso ajuda a manter a estabilidade do aplicativo e otimizar custos.
+```
+
+### scaling cooldowns
+```
+Scaling Cooldowns são um importante recurso de Auto Scaling na AWS para controlar a frequência das atividades de escalabilidade (scale up/down).
+
+Alguns pontos-chave sobre Scaling Cooldowns:
+
+- Um default de 300 segundos é definido no Auto Scaling Group, mas você pode configurar explicitamente o valor.
+
+- O cooldown aplica uma pausa após a conclusão de uma atividade de escalabilidade antes da próxima. 
+
+- Isso dá tempo para que as métricas se estabilizem antes de tomar mais ações.
+
+- Se uma alta demanda ainda persistir após o cooldown, um novo scale out pode ser acionado.
+
+- Cooldown evita "thrashing" - criando/excluindo instâncias muito rapidamente o que pode perturbar aplicativos.
+
+- Valores comuns variam de poucos minutos para cargas de trabalho com tráfego volátil ou até horas para backends mais estáveis.
+
+- Também se aplica para diminuir a escala quando a demanda cai.
+
+Definir well-tuned scaling cooldowns, junto com outras políticas balanceadas permite estabilidade, performance e custo ideal no Auto Scaling!
+
+Então em resumo, os scaling cooldowns adicionam atraso intencional, mas são cruciais para controlar a taxa de mudança.
+```
