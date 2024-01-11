@@ -762,6 +762,17 @@ Multi-AZ:
 Em resumo, o Multi-AZ é para alta disponibilidade enquanto as Read Replicas são para aumentar o desempenho de leitura escalando horizontalmente. Os dois podem ser usados juntos para ter ambos benefícios.
 ```
 
+## rds backup
+- backups manuais não expliram, ja os automatizados sim
+- caso queria guardar os dados de um banco de dados, faça bkp dele e apague-o, pois o bkp e mais barato o armazenamento.
+- a restauração de um bkp, criará um novo banco de dados
+- tem um recurso de clonagem para banco de dados aurora, que não precisamos para a base e ele gera um novo pra nós
+
+## rds/aurora security
+- podemos criptografar os nosso banco de dados nos volumes
+- se eu não encriptar o master, as réplcias também não serão encriptadas
+- rds não temos acesso via ssh, pois são serviços gerenciados, a não ser um rds customizavél
+
 ## aurora
 ```
 O Amazon Aurora é um serviço de banco de dados relacional gerenciado e proprietário da AWS com foco em desempenho e alta disponibilidade. Alguns aspectos importantes:
