@@ -817,3 +817,56 @@ Ou seja, tudo é abstraído e gerenciado pelo Aurora como um serviço. Você só
 
 Isso simplifica muito a escalabilidade e também reduz o overhead operacional.
 ```
+
+### aurora serverless e aurora global
+```
+**Serveless no Aurora**
+
+O Aurora Serverless é uma opção de provisionamento do Aurora que permite que você execute cargas de trabalho sem ter que gerenciar a infraestrutura do banco de dados. Com o Aurora Serverless, você só paga pelo que usa, e o serviço dimensiona automaticamente para atender às suas necessidades.
+
+**Benefícios do Aurora Serverless**
+
+* **Sem gerenciamento de infraestrutura:** Com o Aurora Serverless, você não precisa se preocupar em provisionar, dimensionar ou gerenciar a infraestrutura do banco de dados. O serviço faz tudo isso para você.
+
+* **Dimensionamento automático:** O Aurora Serverless dimensiona automaticamente para atender às suas necessidades. Isso significa que você não precisa se preocupar em ficar sem recursos ou ter que dimensionar manualmente o banco de dados.
+
+* **Pagamento por uso:** Você só paga pelo que usa com o Aurora Serverless. Isso significa que você não precisa se preocupar em pagar por recursos que não está usando.
+
+**Quando Usar o Aurora Serverless**
+
+O Aurora Serverless é uma boa opção para aplicativos que:
+
+* São sensíveis à latência
+* São altamente imprevisíveis
+* Têm picos de tráfego
+* Requerem alta disponibilidade
+* Não requerem controle preciso sobre a infraestrutura do banco de dados
+
+**Conclusão**
+
+O Aurora Serverless é uma opção de provisionamento do Aurora que oferece vários benefícios, incluindo sem gerenciamento de infraestrutura, dimensionamento automático e pagamento por uso. O Aurora Serverless é uma boa opção para aplicativos que são sensíveis à latência, altamente imprevisíveis, têm picos de tráfego, requerem alta disponibilidade e não requerem controle preciso sobre a infraestrutura do banco de dados.
+
+e o aurora global **Aurora Global: Conceito Geral**
+
+O Aurora Global é um recurso do Amazon Aurora que permite que você tenha um único cluster de banco de dados que abrange várias regiões da AWS. Isso significa que você pode ter dados replicados em várias regiões, o que proporciona alta disponibilidade e resiliência.
+
+**Benefícios do Aurora Global**
+
+* **Alta disponibilidade:** Com o Aurora Global, seus dados são replicados em várias regiões, o que garante que eles estejam sempre disponíveis, mesmo que uma região fique indisponível.
+
+* **Resiliência:** O Aurora Global também é resiliente a falhas de hardware e software. Se um nó do banco de dados falhar, o serviço automaticamente redirecionará o tráfego para outro nó.
+
+* **Escalabilidade global:** O Aurora Global permite que você dimensione facilmente seu banco de dados para atender às suas necessidades globais. Você pode adicionar ou remover regiões conforme necessário.
+
+**Quando Usar o Aurora Global**
+
+O Aurora Global é uma boa opção para aplicativos que:
+
+* São globais em escopo
+* Requerem alta disponibilidade e resiliência
+* Precisam escalar facilmente para atender às necessidades globais
+
+**Conclusão**
+
+O Aurora Global é um recurso do Amazon Aurora que permite que você tenha um único cluster de banco de dados que abrange várias regiões da AWS. O Aurora Global oferece alta disponibilidade, resiliência e escalabilidade global. O Aurora Global é uma boa opção para aplicativos que são globais em escopo, requerem alta disponibilidade e resiliência e precisam escalar facilmente para atender às necessidades globais.
+```
