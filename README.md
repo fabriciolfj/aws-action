@@ -919,3 +919,48 @@ O Aurora Global é uma boa opção para aplicativos que:
 
 O Aurora Global é um recurso do Amazon Aurora que permite que você tenha um único cluster de banco de dados que abrange várias regiões da AWS. O Aurora Global oferece alta disponibilidade, resiliência e escalabilidade global. O Aurora Global é uma boa opção para aplicativos que são globais em escopo, requerem alta disponibilidade e resiliência e precisam escalar facilmente para atender às necessidades globais.
 ```
+
+# Elastic cache
+```
+O Amazon ElastiCache é um serviço web da AWS para implementar caches de alto desempenho e disponibilidade na nuvem. Os principais destaques são:
+
+- Permite criar clusters compatíveis com Redis ou Memcached, os dois principais sistemas de cache na memória.
+
+- Os nós do cluster ficam na VPC para segurança e baixa latência com aplicações AWS.
+
+- Alta disponibilidade com replicação automática e failover gerenciados.
+
+- Provê opções otimizadas tanto para desempenho (instâncias espeficas para cache), quanto custo eficiente (baseadas em HW commodities).
+
+- Integra com serviços como Auto Scaling Groups e Node Groups para provisionamento simplificado.
+
+- Fácil monitoramento de métricas do cache como uso de memória, conexões, misses, etc. 
+
+- Suporta backups automatizados também.
+
+Em suma, o ElastiCache facilita implementar soluções avançadas de cache na memória que superam desafios operacionais de disponibilidade, durabilidade, escala e monitoramento. Provendo substrato de cache rápido e robusto para aplicações críticas.
+
+As principais diferenças entre Redis e Memcached são:
+
+TIPO DE ARMAZENAMENTO:
+
+- Redis: Armazena estruturas de dados na memória (strings, hashes, lists, sets, etc). Permite operações avançadas nessas estruturas.
+
+- Memcached: Armazena dados simples na forma chave-valor. Sem abstrações de dados complexas.
+
+PERSISTÊNCIA:
+
+- Redis: Dados podem ser persistentes em disco para durabilidade se necessário.
+
+- Memcached: Cache estritamente na memória RAM. Os dados não persistem a reinícios ou falhas.
+
+
+RECURSOS:
+
+- Redis: Mais recursos como suporte a transações, pub/sub, Lua scripting, maior flexibilidade.
+
+- Memcached: Mais simples, apenas focado em cache na memória de alto desempenho.
+
+
+Em resumo, o Redis provê um conjunto de dados e recursos mais rico e com mais opções de persistência, enquanto o Memcached foca exclusivamente em cache na RAM de alta velocidade.
+```
