@@ -773,6 +773,44 @@ Em resumo, o Multi-AZ é para alta disponibilidade enquanto as Read Replicas sã
 - se eu não encriptar o master, as réplcias também não serão encriptadas
 - rds não temos acesso via ssh, pois são serviços gerenciados, a não ser um rds customizavél
 
+## rds proxy
+```
+O RDS Proxy é um recurso do Amazon RDS que provê um proxy SQL transparente e altamente disponível entre aplicações e bancos de dados. Os principais benefícios são:
+
+- Agregação de conexões de aplicativos para o banco de dados, aumentando utilização de recursos.
+
+- Conexões são multiplexadas através do proxy, reduzindo overhead de IO entre app e banco.
+
+- O proxy é altamente disponível, com failover automático entre zonas. Remove ponto único de falha.
+
+- Facilita administração e security, por exemplo limitando conexões às subnets de aplicação e integrando com IAM Authentication. 
+
+- Suporta split horizon DNS, direcionando leitura para réplicas e escrita para primário transparentemente.
+
+- Permite upgrade sem impactos removendo conexões diretas aos bancos.
+
+Em resumo, o RDS Proxy melhora escalabilidade, performance, disponibilidade e segurança entre aplicações e bancos de dados na AWS. 
+
+Ele abstrai e gerencia conexões de forma inteligente, além de habilitar routings avançados. Tudo mantendo compatibilidade com frameworks e linguagens existentes.
+
+
+RDS Proxy ajuda a reduzir o estresse e sobrecarga de conexões no banco de dados de várias maneiras:
+
+- Agregação de Conexões - Múltiplas conexões do aplicativo são consolidadas pelo proxy, reduzindo a carga de conexões que chega ao RDS.
+
+- Reuso de Conexões - Uma pool de conexões é mantida no proxy ao invés de reconnects constantes ao RDS. Isso reduz sobrecarga de establichment de conexões.
+
+- Pooling de Transações - Sessões de banco de dados são reutilizadas pelo proxy para múltiplas queries de aplicativo, sem precisar finalizar e reabrir sessões a todo momento.
+
+- Limitador de Taxa - As taxas de solicitações e conexões podem ser limitadas para aliviar sobrecarga repentina no RDS.
+
+- Monitoramento Embutido - O proxy tem visibilidade de queries problemáticas que podem ser otimizadas.
+
+- Failover Automático - Em caso de problemas no RDS, o proxy faz retry transparente e encaminha para uma instância íntegra.
+
+Então sim, ele atua como um escudo inteligente de acesso ao banco, encarregando-se de gerenciar e consolidar conexões de forma mais eficiente.
+```
+
 ## aurora
 ```
 O Amazon Aurora é um serviço de banco de dados relacional gerenciado e proprietário da AWS com foco em desempenho e alta disponibilidade. Alguns aspectos importantes:
