@@ -141,6 +141,22 @@ aws cloudformation delete-stack --stack-name etherpad-codedeploy
 
 ### instancias spots
 ```
+Máquinas Spot são instâncias EC2 que aproveitam a capacidade ociosa da AWS para conseguir economias significativas em comparação com as instâncias sob demanda. Alguns pontos importantes:
+
+- São instâncias que podem ser interrompidas pela AWS com um aviso de 2 minutos se a capacidade for necessária para outras cargas de trabalho.
+
+- Como utilizam capacidade excedente, são disponibilizados com descontos de até 90% comparado ao preço sob demanda.
+
+- Úteis para cargas de trabalho flexíveis, que podem tolerar interrupções, como processamento em lotes, análises, transcodificação de mídia etc.
+
+- Não são adequadas para aplicações com estado importante ou missão crítica.
+
+- É possível definir o preço máximo por hora que você está disposto a pagar. Se o preço do Spot no momento ultrapassar o seu preço máximo, a instância é encerrada.
+
+- Disponíveis em todas as famílias de instâncias e tipos de AWS.
+
+Em resumo, Spot Instances permitem economia em troca da flexibilidade na dispobilidade de capacidade, sendo úteis para workloads tolerantes a falhas.
+
 A diferença entre Spot Instances, Spot Fleets e Spot Requests na AWS é a seguinte:
 
 **Spot Instances** 
@@ -711,8 +727,93 @@ Alguns pontos-chave sobre Scaling Cooldowns:
 - Valores comuns variam de poucos minutos para cargas de trabalho com tráfego volátil ou até horas para backends mais estáveis.
 
 - Também se aplica para diminuir a escala quando a demanda cai.
-
 Definir well-tuned scaling cooldowns, junto com outras políticas balanceadas permite estabilidade, performance e custo ideal no Auto Scaling!
 
 Então em resumo, os scaling cooldowns adicionam atraso intencional, mas são cruciais para controlar a taxa de mudança.
+```
+
+# RDS
+## read replicas e multiza
+```
+Read Replicas e Multi-AZ são recursos importantes do Amazon RDS (serviço de banco de dados gerenciado) para aumentar a disponibilidade e escalabilidade:
+
+
+Read Replicas:
+
+- Réplicas somente leitura da sua instância de banco de dados RDS.
+
+- Permitem escalar horizontalmente a capacidade de leitura distribuindo carga.
+
+- As operações de leitura podem ser isoladas nas réplicas. A escrita continua apenas no master.
+
+- Réplicas estão disponíveis dentro da mesma região.
+
+
+Multi-AZ:  
+
+- O RDS cria um standby da instância do banco em outra zona de disponibilidade da mesma região.
+
+- Para proteger contra falhas na zona ou infraestrutura, promovendo alta disponibilidade. 
+
+- Em caso de falha ou perda do banco principal, o RDS faz failover para o standby com endereço IP diferente, porém transparente para aplicação.
+
+- Não requer mudanças na lógica do aplicativo para usar a nova instância primária.
+
+Em resumo, o Multi-AZ é para alta disponibilidade enquanto as Read Replicas são para aumentar o desempenho de leitura escalando horizontalmente. Os dois podem ser usados juntos para ter ambos benefícios.
+```
+
+## aurora
+```
+O Amazon Aurora é um serviço de banco de dados relacional gerenciado e proprietário da AWS com foco em desempenho e alta disponibilidade. Alguns aspectos importantes:
+
+- Compatível como MySQL e PostgreSQL, permitindo migração de cargas de trabalho existentes.
+
+- Entrega até 5x melhor performance que o MySQL tradicional e 3x mais rápido que o PostgreSQL. Escala até 64TB de dados.
+
+- Arquitetura altamente paralela com replicação contínua para redundância e tolerância a falhas. 
+
+- O armazenamento é separado do computo, permitindo escala independente. O volume de armazenamento cresce e encolhe dinamicamente.
+
+- Disponibiliza replicação sem esforço entre zonas de disponibilidade e automatic Failover em menos de 30 segundos em caso de perda na zona principal.
+
+- Backup contínuo e restauração pontual são feitos sem impactar as operações do banco com a capacidade de fazer snapshots em segundos. 
+
+- Opções de memória, armazenamento e nós computo que podem ser trocados online conforme a necessidade da carga de trabalho.
+
+Em resumo, o Aurora entrega alta performance, disponibilidade e tolerância a falha focado em workloads críticas que exigem banco de dados robusto e confiável. Além de ser escalável na AWS.
+
+
+Amazon Aurora permite a criação de réplicas de leitura (Read Replicas) para escalar horizontalmente e separar o tráfego de leitura do de escrita.
+
+Alguns pontos importantes sobre as Réplicas de Leitura no Aurora:
+
+- Até 15 réplicas podem ser criadas a partir da instância principal de banco de dados.
+
+- As operações de gravação e mutação de dados ocorrem somente no banco de dados primário (writer instance).
+
+- Já as consultas de dados, relatórios e outras queries somente-leitura podem ser direcionadas para uma das read replicas.
+
+- Isso permite escalar a camada de leitura distribuindo a carga entre as várias instâncias de réplica.
+
+- As replicações para as read replicas são feitas de forma assíncrona, rápida e automatizada.
+
+- Em caso de falha no banco de dados primário, o Aurora faz failover promovendo automaticamente uma das read replicas como a nova instância de escrita primária.
+
+Dessa forma o Aurora aproveita o melhor da replicação síncrona e assíncrona para escalar enquanto mantém alta disponibilidade. As Read Replicas são uma parte fundamental desse design distribuído.
+
+
+Quando você cria réplicas de leitura (Read Replicas) no Amazon Aurora, o próprio serviço de banco de dados gerencia o roteamento das conexões para as várias instâncias em segundo plano.
+
+Você não precisa se preocupar com os detalhes como endereços IP ou configurações específicas de cada read replica. Basta interagir com o endpoint do Writer (banco primário) que todas as queries somente leitura são automaticamente enviadas para uma das instâncias disponíveis de réplica.
+
+Essa é uma grande vantagem do Aurora sobre gerenciar replicas por conta própria. Você tem:
+
+- Criação e exclusão automatizada das replicas conforme a necessidade
+- Failover e eleição de nova instância primária é transparente
+- Balanceamento de carga entre as instâncias de réplica é feito builtin  
+- Aplicação se conecta sempre ao mesmo endpoint lógico
+
+Ou seja, tudo é abstraído e gerenciado pelo Aurora como um serviço. Você só dimensiona o número desejado de Read Replicas para aumentar a capacidade de leitura, sem precisar gerenciar cada réplica individualmente.
+
+Isso simplifica muito a escalabilidade e também reduz o overhead operacional.
 ```
