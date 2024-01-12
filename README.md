@@ -746,10 +746,11 @@ Read Replicas:
 
 - As operações de leitura podem ser isoladas nas réplicas. A escrita continua apenas no master.
 
-- Réplicas estão disponíveis dentro da mesma região.
+- Réplicas estão disponíveis dentro da mesma região. (podemos colocar em região diferente e habilitar o multi-az nela)
 
 
 Multi-AZ:  
+- nao precisamos mudar a cadeia de conexão
 
 - O RDS cria um standby da instância do banco em outra zona de disponibilidade da mesma região.
 
@@ -760,6 +761,10 @@ Multi-AZ:
 - Não requer mudanças na lógica do aplicativo para usar a nova instância primária.
 
 Em resumo, o Multi-AZ é para alta disponibilidade enquanto as Read Replicas são para aumentar o desempenho de leitura escalando horizontalmente. Os dois podem ser usados juntos para ter ambos benefícios.
+
+Em relação a replicação de dados:
+ - assincrona em replicas
+ - sincrona em multi-az
 ```
 
 ## rds backup
@@ -963,4 +968,8 @@ RECURSOS:
 
 
 Em resumo, o Redis provê um conjunto de dados e recursos mais rico e com mais opções de persistência, enquanto o Memcached foca exclusivamente em cache na RAM de alta velocidade.
+
+Iam é suportado apenas para redis (alem do iam para usar o recurso, redis tambem pode usar usuário e senha, como mais uma camada de segurança, e alem do ssl)
+Memcache usa apena user/password
+
 ```
