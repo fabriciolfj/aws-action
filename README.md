@@ -1,5 +1,5 @@
 # aws-action
-
+(exame https://awscertificationpractice.benchprep.com/app/aws-certified-solutions-architect-associate-official-practice-question-set-saa-c03?locale=pt-br#exams/details/165791)
 ## pontos importantes
 VPC (Virtual Private Cloud) é um recurso importante na AWS para criar redes virtuais privadas. Alguns conceitos:
 
