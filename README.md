@@ -979,3 +979,45 @@ Memcache usa apena user/password
 
 # ROTA 53
 
+
+# Detalhes no exame
+```
+O AWS WAF pode detectar a presença de código SQL que provavelmente seja mal-intencionado (conhecido como injeção de SQL). Ele também pode detectar a presença de um script que provavelmente seja mal-intencionado (conhecido como script cross-site).
+
+Para obter mais informações sobre o AWS WAF, consulte AWS WAF.
+
+Essa solução atende ao requisito de um RTO de 5 minutos. As instâncias são executadas com baixa capacidade e podem ser dimensionadas em minutos.
+=========
+Uma empresa está projetando uma arquitetura de recuperação de desastres (DR) para um aplicativo importante na AWS. A empresa determinou que o RTO é de 5 minutos com uma capacidade mínima de instância para dar suporte ao aplicativo no site de DR da AWS. A empresa precisa minimizar os custos da arquitetura de DR.
+
+Qual estratégia de DR atenderá a esses requisitos?
+
+Para obter mais informações sobre standby passivo, consulte Plan for Disaster Recovery (DR) (Plano de recuperação de desastres (DR)).
+=========
+Uma empresa de mídia está projetando uma nova solução para renderização gráfica. A aplicação exige até 400 GB de armazenamento para dados temporários que são descartados depois que os quadros são renderizados. Ela exige aproximadamente 40.000 IOPS aleatórias para realizar a renderização.
+
+Qual é a opção de armazenamento MAIS econômica para essa aplicação de renderização?
+uma instancia da amazon ec2 otimizada para armazenamento de instâncias
+==========
+Uma empresa está desenvolvendo uma aplicação de bate-papo que será implantada na AWS. A aplicação armazena as mensagens usando um modelo de dados de chave/valor. Grupos de usuários geralmente leem as mensagens várias vezes. Um arquiteto de soluções precisa selecionar uma solução de banco de dados que seja escalada para uma alta taxa de leituras e entregue mensagens com latência de microssegundos.
+
+Qual solução de banco de dados atenderá a esses requisitos?
+
+dynamodb com acelerador dax
+==========
+Uma empresa precisa procurar detalhes de configuração sobre como foi iniciada uma instância do Amazon EC2 baseada em Linux.
+
+Qual comando um arquiteto de soluções deve executar na instância do EC2 para coletar os metadados do sistema?
+
+
+A única maneira de recuperar metadados da instância é usar o endereço local do link, que é 169.254.169.254.
+==========
+Uma aplicação de relatórios é executada em instâncias do Amazon EC2 atrás de um Application Load Balancer. As instâncias são executadas em um grupo do Amazon EC2 Auto Scaling em várias zonas de disponibilidade. Para relatórios complexos, a aplicação pode levar até 15 minutos para responder a uma solicitação. Um arquiteto de soluções está preocupado com o fato de os usuários receberem erros HTTP 5xx se uma solicitação de relatório estiver em andamento durante um evento de redução.
+
+O que o arquiteto de soluções deve fazer para garantir que as solicitações do usuário sejam concluídas antes que as instâncias sejam encerradas?
+
+Aumentar o tempo limite de atraso de cancelamento de registro, para o grupo de destino das instâncias para mais de 900 segundos.
+Por padrão, o Elastic Load Balancing aguarda 300 segundos antes da conclusão do processo de cancelamento do registro, o que pode ajudar a concluir as solicitações em andamento para o destino. Para alterar a quantidade de tempo que o Elastic Load Balancing aguarda, atualize o valor de atraso do cancelamento do registro.
+
+Para obter mais informações sobre o atraso do cancelamento de registro, consulte Atraso do cancelamento de registro.
+```
