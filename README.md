@@ -528,6 +528,8 @@ Já os volumes magnéticos padrão (st1 e sc1) e o volume de throughput elevado 
 
 Então em resumo, os tipos SSD (gp2, gp3, io1 e io2) podem ser boot volumes, os tipos magnéticos/throughput não.
 
+ O desempenho básico de E/S para armazenamento SSD de uso geral é de 3 IOPS para cada GiB. Para 334 GiB de armazenamento, o desempenho básico seria de 1.002 IOPS. Além disso, o armazenamento SSD de uso geral é mais econômico do que o armazenamento de IOPS provisionado.
+
 ```
 
 # Escalabilidade
