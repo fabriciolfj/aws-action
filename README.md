@@ -978,7 +978,64 @@ Memcache usa apena user/password
 
 
 # ROTA 53
+```
+ O Amazon Route 53 é o serviço de DNS escalável e de alta disponibilidade oferecido pela AWS. Alguns pontos importantes:
 
+- Permite gerenciar e fazer consultas de nomes de domínio de forma altamente confiável e de baixa latência.
+
+- Serve autoritativamente bilhões de consultas de DNS por dia para domínios registrados na Route 53.
+
+- Integra-se facilmente com outros serviços AWS como registros alias para balanceadores de carga e instâncias EC2.
+
+- Oferece encaminhamento geográfico de tráfego por meio do DNS, latência mínima e failover entre regiões. 
+
+- Disponibiliza monitoramento de integridade de endpoints por meio de health checks. Se um endpoint falhar os checks, ele é automaticamente removido.
+
+- Tem recursos avançados como split horizon DNS para separar tráfego de leitura e escrita.
+
+- Cobrança é baseada no uso, permitindo escalar para qualquer volume de tráfego sem custos fixos.
+
+Dessa forma o Route 53 fornece serviços DNS altamente escaláveis, confiáveis e de baixa latência críticos para aplicações na AWS.
+
+
+Registros de DNS:
+O Route 53 suporta todos os principais tipos de registros DNS como A, AAAA, CNAME, MX, TXT, etc. Isso mapeia nomes de domínio para endereços IP, outros nomes (aliases) ou informações de roteamento de email/tráfego.
+
+Encaminhamento Geográfico de Tráfego:
+Permite que o tráfego de usuários seja encaminhado para endpoints na região AWS mais próxima. Isso reduz latência e melhora performance percebida pelo usuário final ao ser direcionado para infra mais perto geograficamente.
+
+Health Checks:
+Os health checks fazem requisições periódicas dos endpoints e apenas encaminham tráfego se obtiverem respostas sucesso. Isso remove automaticamente da rotação instâncias não íntegras. Vários protocolos suportados (HTTP, TCP, HTTPS com sni).
+
+DNS Privativo:
+Permite criar zonas DNS customizadas apenas acessíveis internamente pela sua VPC. Útil para nomes de recursos internos não exposer publicamente. Integra com DHCP para fácil uso dos nomes em instâncias EC2.
+
+Monitoramento:
+O Route53 fornece métricas detalhadas sobre consultas de DNS como latência, requests por segundo, erros etc. Integra com CloudWatch para construir dashboards e alarms.
+
+Hosted Zones: 
+
+- Uma hosted zone é uma coleção de registros DNS para um domínio específico que você gerencia no Route53. Por exemplo, uma hosted zone para meuapp.com.
+
+- Ela contém os registros DNS que definem como tratar requests para nomes de subdomínios como www.meuapp.com ou api.meuapp.com.
+
+- Você pode ter várias hosted zones para múltiplos domínios gerenciados no Route53.
+
+Registros CNAME:
+
+- Um registro CNAME mapeia um nome DNS para outro nome DNS, não diretamente para um IP. 
+
+- Úteis para apontar subdomínios para outros hosts. Por exemplo: 
+api.meuapp.com CNAME meuapp.azurewebsites.com
+
+- Também usados para mapear domínios apex (meuapp.com) para recursos Route53 como Load Balancers.
+
+Registros A e AAAA:
+
+- Registram A mapeiam um nome de host para endereços IPv4.
+- Registros AAAA mapeiam um nome de host para endereços IPv6.
+- Usados para mapear nomes como www.meuapp.com para endereços IP finais.
+```
 
 # Detalhes no exame
 ```
