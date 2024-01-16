@@ -1096,7 +1096,7 @@ Alias:
 - Restringe-se a mapeamentos dentro da AWS.
 - funciona para domínios raiz e não raiz.
 - record alias é sempre do tipo A/AAAA para aws resorces (IPV4, IPV6)
-- nao podemos definir um ttl
+- nao podemos definir um ttl, ou seja, caso mude algum no recurso referenciado já é refletido
 - nao podemos colocar um alias para um ec2 dns
 - alias funciona para:
   - elastic load balancer
