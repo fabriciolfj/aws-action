@@ -1109,6 +1109,40 @@ Alias:
   - route53 record
 
 Em resumo, os registros Alias provêm integração mais simples e eficiente com recursos AWS, enquanto CNAMEs são compatíveis entre DNSs mas requerem mais processamento.
+
+
+Politica de roteamento (routing policy)
+
+Roteamento Simples:
+Um único registro DNS que roteia para um recurso.
+Não há checagem de integridade ou failover.
+Use quando tiver um único recurso/destino.
+
+Roteamento com Falha:
+Cria registros de DNS primário e secundário.
+Faz health check do primário, e em caso de falha roteia para o secundário.
+Permite definir failover automático entre recursos.
+
+Roteamento Baseado em Latência:
+Retorna o recurso/região de menor latência para o usuário com base na localização geográfica.
+Otimiza tempo de resposta ao direcionar usuários para infraestrutura próxima.
+
+Roteamento Ponderado:
+Define pesos (%) para vários recursos/registros de destino.
+O tráfego é distribuído proporcionalmente de acordo com os pesos.
+Útil para balanceamento de carga e consistência de capacidade.
+
+Roteamento de Latência Múltipla:
+É uma extensão do roteamento de latência, permitindo especificar múltiplas regiões AWS como destino.
+As consultas DNS são respondidas com todas as opções, para que o cliente selecione a latência mínima.
+
+Geoproximidade de Tráfego (Geolocation):
+Direciona os usuários para destinos específicos com base nas geolocalizações de onde partem as consultas DNS.
+Permite personalizar comportamento com base no país ou continente de origem.
+
+Respostas DNS Multivaloradas (Multi Value):
+Retorna até 8 registros DNS aleatoriamente embaralhados em cada resposta.
+Útil para distribuir carga entre vários destinos.
 ```
 
 # Detalhes no exame
