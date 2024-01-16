@@ -1073,6 +1073,42 @@ Alguns pontos importantes sobre o TTL do Route53:
 - O TTL define o compromisso entre consistência e eficiência do cache do DNS. Valores muito longos impedem atualizações rápidas.
 
 Portanto o TTL ajuda a controlar quanto os clientes DNS podem cache localmente as respostas do Route53 antes de precisar obter atualizações mais recentes.
+
+
+CNAME vs Alias
+ A principal diferença entre registros CNAME e Alias no Amazon Route 53 é:
+
+CNAME:
+
+- Mapeia um nome DNS para outro nome DNS (não diretamente para endereço IP).
+- Requer lookups DNS adicionais para resolver o nome de destino antes de chegar nos IPs.
+- Funciona entre zonas DNS e provedores DNS.
+- Não reflete automaticamente mudanças nos IPs dos recursos de destino.
+- nao funciona para dominio raiz, ex: fabricio.net (tem que te algum antes app.fabricio.net)
+- podemos definir um ttl (tempo de vida do cache no cliente, para não fazer muitos lookups dns, que acarreta em custos)
+
+Alias:
+
+- Mapeia diretamente de um nome DNS para um recurso AWS (ELB, CloudFront, etc). 
+- Encaixa perfeitamente serviços AWS, sem lookups extras.
+- Resolve sempre para endereços IP atuais dos recursos referenciados.
+- Alterações nos recursos (ex: IP do ELB) são automaticamente refletidas.
+- Restringe-se a mapeamentos dentro da AWS.
+- funciona para domínios raiz e não raiz.
+- record alias é sempre do tipo A/AAAA para aws resorces (IPV4, IPV6)
+- nao podemos definir um ttl
+- nao podemos colocar um alias para um ec2 dns
+- alias funciona para:
+  - elastic load balancer
+  - amazon cloudfront
+  - aws api gwt
+  - elastic beanstalk
+  - s3 websites
+  - vpc interface endpoints
+  - global acclerator
+  - route53 record
+
+Em resumo, os registros Alias provêm integração mais simples e eficiente com recursos AWS, enquanto CNAMEs são compatíveis entre DNSs mas requerem mais processamento.
 ```
 
 # Detalhes no exame
