@@ -1143,6 +1143,27 @@ Permite personalizar comportamento com base no país ou continente de origem.
 Respostas DNS Multivaloradas (Multi Value):
 Retorna até 8 registros DNS aleatoriamente embaralhados em cada resposta.
 Útil para distribuir carga entre vários destinos.
+
+Route53 health check
+ O Amazon Route 53 oferece várias opções de health checks que podem ser configuradas para monitorar a disponibilidade e funcionalidade de endpoints. Aqui estão as principais opções em detalhe:
+
+- HTTP/HTTPS: verifica se um endpoint HTTP ou HTTPS está respondendo códigos de resposta HTTP esperados (como 200 OK). Permite configurar string para check na resposta.
+
+- TCP: verifica se uma porta TCP está aberta em um endpoint. Útil para check de disponibilidade de banco de dados, aplicações sem interface web, etc.
+
+- HTTP(S) proxy: similar ao HTTP/HTTPS normal, mas passa o check por um proxy AWS. Útil quando o endpoint está em uma VPC privada.
+
+- CloudWatch alarm: ao invés de fazer checks próprios, monitora alarmes do CloudWatch como métrica de disponibilidade.
+
+- Ping path: envia pings ICMP a endpoints para verificar apenas disponibilidade básica de rede.
+
+- Calculated/composite: combina resultados de outros checks para criar uma lógica customizada de disponibilidade.
+
+Cada tipo de check permite configurar threshold de falhas, frequência de checks, falha para outras regiões AWS, e integração com sistemas de monitoring.
+
+Alguns recursos avançados incluem monitoramento de certificados SSL, validação de strings em requests/responses, autenticação em checks HTTP, entre outros.
+
+Os health checks do Route53 são uma maneira eficiente de monitorar endpoints críticos e configurar failovers automatizados.
 ```
 
 # Detalhes no exame
