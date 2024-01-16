@@ -1035,6 +1035,44 @@ Registros A e AAAA:
 - Registram A mapeiam um nome de host para endereços IPv4.
 - Registros AAAA mapeiam um nome de host para endereços IPv6.
 - Usados para mapear nomes como www.meuapp.com para endereços IP finais.
+
+Record
+Recordes (registros) de DNS são as unidades fundamentais de informação armazenadas em um domínio no sistema de nomes de domínio (DNS). Cada registro DNS mapeia um nome de domínio específico para algum tipo de dado, como endereço IP, outro nome de domínio ou informações de roteamento de e-mail.
+
+Alguns dos principais tipos de registros DNS:
+
+- A: Mapeia um nome de domínio para endereço IPv4 (ex: 192.168.1.1)
+
+- AAAA: Mapeia um nome de domínio para endereço IPv6 
+
+- CNAME: Mapeia um nome de domínio para outro nome de domínio
+
+- MX: Especifica qual servidor de e-mail é responsável por receber e-mails destinados a esse domínio
+
+- TXT: Permite associar texto arbitrário com o nome do domínio
+
+- NS: Especifica quais servidores de nomes são autoritativos para aquele domínio
+
+Cada registro possui um tipo (A, CNAME etc) além de outras informações como nome do domínio mapeado e qualquer dado associado, como endereços IP. 
+
+O conjunto de todos os registros é o que permite que requisições de usuários ou aplicativos sejam roteadas para o destino certo com base no nome solicitado.
+
+TTL
+O TTL (Time To Live) em um registro DNS na AWS Route53 determina por quanto tempo uma resposta DNS pode ser cacheada pelos resolvers e quando deverá ser atualizada.
+
+Alguns pontos importantes sobre o TTL do Route53:
+
+- Valores baixos (por exemplo 60 segundos) fazem o resolver DNS reconsultar frequentemente as mudanças nos registros. Útil quando os IPs são alterados constantemente.
+
+- Valores mais altos (1 dia ou mais) reduzem carga no servidor DNS pois permitem que os resolvers cachem por mais tempo antes de precisar reconsultar.
+
+- Valores altos funcionam bem para servidores estáticos ou mudanças pouco frequentes. Evita consultas desnecessárias.
+
+- O padrão do Route53 é 48 horas, um balanceamento entre estabilidade e capacidade de atualizar mudanças em dias.
+
+- O TTL define o compromisso entre consistência e eficiência do cache do DNS. Valores muito longos impedem atualizações rápidas.
+
+Portanto o TTL ajuda a controlar quanto os clientes DNS podem cache localmente as respostas do Route53 antes de precisar obter atualizações mais recentes.
 ```
 
 # Detalhes no exame
