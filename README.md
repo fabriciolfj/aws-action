@@ -1145,25 +1145,25 @@ Respostas DNS Multivaloradas (Multi Value):
 Retorna até 8 registros DNS aleatoriamente embaralhados em cada resposta.
 Útil para distribuir carga entre vários destinos.
 
+Geoproximity Routing Policy
+Coloco pesos nas regiões, região com maior peso atrai mais usuarios, como se expandi-se essa região para englobar mais usuários:
+exemplo: um pais 2 regiões, direta e esquedar, se ambas com peço 50, os usuários deste pais dicaria metade em uma az e outra em outra az
+
+Routeamento baseado em ip
+Direciona para o dns com abse no block de ip do cliente. Exemplo:
+ example.com na maquina 1, block 200.0.0.0, cliente com essa faixa vai para essa maquina
+ example.com na maquina 2, block 233.0.0.0, cliente com essa faixa vai para essa maquina
+
 Route53 health check
  O Amazon Route 53 oferece várias opções de health checks que podem ser configuradas para monitorar a disponibilidade e funcionalidade de endpoints. Aqui estão as principais opções em detalhe:
-
 - HTTP/HTTPS: verifica se um endpoint HTTP ou HTTPS está respondendo códigos de resposta HTTP esperados (como 200 OK). Permite configurar string para check na resposta.
-
 - TCP: verifica se uma porta TCP está aberta em um endpoint. Útil para check de disponibilidade de banco de dados, aplicações sem interface web, etc.
-
 - HTTP(S) proxy: similar ao HTTP/HTTPS normal, mas passa o check por um proxy AWS. Útil quando o endpoint está em uma VPC privada.
-
 - CloudWatch alarm: ao invés de fazer checks próprios, monitora alarmes do CloudWatch como métrica de disponibilidade.
-
 - Ping path: envia pings ICMP a endpoints para verificar apenas disponibilidade básica de rede.
-
 - Calculated/composite: combina resultados de outros checks para criar uma lógica customizada de disponibilidade.
-
 Cada tipo de check permite configurar threshold de falhas, frequência de checks, falha para outras regiões AWS, e integração com sistemas de monitoring.
-
 Alguns recursos avançados incluem monitoramento de certificados SSL, validação de strings em requests/responses, autenticação em checks HTTP, entre outros.
-
 Os health checks do Route53 são uma maneira eficiente de monitorar endpoints críticos e configurar failovers automatizados.
 ```
 
