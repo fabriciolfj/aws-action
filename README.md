@@ -1139,6 +1139,7 @@ As consultas DNS são respondidas com todas as opções, para que o cliente sele
 Geoproximidade de Tráfego (Geolocation):
 Direciona os usuários para destinos específicos com base nas geolocalizações de onde partem as consultas DNS.
 Permite personalizar comportamento com base no país ou continente de origem.
+exemplo: para o Brasil vem ser direcionado para esse ip
 
 Respostas DNS Multivaloradas (Multi Value):
 Retorna até 8 registros DNS aleatoriamente embaralhados em cada resposta.
