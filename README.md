@@ -1144,7 +1144,7 @@ exemplo: para o Brasil vem ser direcionado para esse ip
 Respostas DNS Multivaloradas (Multi Value):
 Retorna até 8 registros DNS aleatoriamente embaralhados em cada resposta.
 Útil para distribuir carga entre vários destinos.
-Não substitui o alb, ideia é efetuar o balanceamento do lado do cliente
+Não substitui o alb, ideia é efetuar o balanceamento do lado do cliente, pois ele recebe todos os ips vinculados ao dns
 
 Geoproximity Routing Policy
 Coloco pesos nas regiões, região com maior peso atrai mais usuarios, como se expandi-se essa região para englobar mais usuários:
