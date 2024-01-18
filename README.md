@@ -1137,7 +1137,7 @@ Roteamento de Latência Múltipla:
 As consultas DNS são respondidas com todas as opções, para que o cliente selecione a latência mínima.
 
 Geoproximidade de Tráfego (Geolocation):
-Direciona os usuários para destinos específicos com base nas geolocalizações de onde partem as consultas DNS.
+Direciona os usuários para destinos específicos com base nas geolocalizações de onde partem as requisições.
 Permite personalizar comportamento com base no país ou continente de origem.
 exemplo: para o Brasil vem ser direcionado para esse ip
 
@@ -1151,7 +1151,7 @@ Coloco pesos nas regiões, região com maior peso atrai mais usuarios, como se e
 exemplo: um pais 2 regiões, direta e esquedar, se ambas com peço 50, os usuários deste pais dicaria metade em uma az e outra em outra az
 
 Routeamento baseado em ip
-Direciona para o dns com abse no block de ip do cliente. Exemplo:
+Direciona para o dns com base no block de ip do cliente. Exemplo:
  example.com na maquina 1, block 200.0.0.0, cliente com essa faixa vai para essa maquina
  example.com na maquina 2, block 233.0.0.0, cliente com essa faixa vai para essa maquina
 
