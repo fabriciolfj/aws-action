@@ -357,6 +357,27 @@ Entendido como as duas métricas complementares? Fique à vontade para perguntar
 -  ami -> usado para customizar instancias ec2
 -  criamos com base em uma ec2 ja sendo executada
 -  posso comprar ami do marketplace
+```
+ Golden AMI (Amazon Machine Image) refere-se a uma imagem de máquina da AWS (AMI) que é tratada como o padrão ouro ou autoritativo dentro de um ambiente. Algumas características importantes das Golden AMIs:
+
+- São AMIs base/customizadas que foram otimizadas e hardened previamente com configurações de segurança, sistemas operacionais, pacotes e aplicações necessárias.
+
+- Agem como uma imagem base consistente para permitir deployments rápidos e confiáveis de instâncias idênticas.
+
+- São imutáveis e versões novas são criadas a partir de builds automatizados, não sendo modificadas depois da criação.
+
+- Permitem escalar rapidamente a infraestrutura para atender demandas, pois usam a mesma AMI base confiável.
+
+- Facilitam o gerenciamento de atualizações e versões, já que mudanças podem ser introduzidas criando novas AMIs douradas.
+
+- Seguem práticas recomendadas de segurança e conformidade desde a fase de construção.
+
+- Reduzem erros e inconsistências entre ambientes, pois todos usam a mesma linha de base.
+
+Então as Golden AMIs são cruciais para ambientes consistentes, escaláveis e seguros em nuvem. Elas trazem velocidade e confiança para deployments.
+
+Golden AMI é uma imagem que contém todo o seu software instalado e configurado para que futuras instâncias do EC2 possam inicializar rapidamente a partir dessa AMI
+```
 
 ## tipos ebs
 Os principais tipos de volumes EBS (Elastic Block Store) da AWS são:
@@ -1096,7 +1117,13 @@ Alias:
 - Restringe-se a mapeamentos dentro da AWS.
 - funciona para domínios raiz e não raiz.
 - record alias é sempre do tipo A/AAAA para aws resorces (IPV4, IPV6)
-- nao podemos definir um ttl, ou seja, caso mude algum no recurso referenciado já é refletido
+- ttl
+```
+Cada registro DNS possui um TTL (Time To Live) que ordena aos clientes por quanto tempo armazenar esses valores em cache e 
+não sobrecarregar o DNS Resolver com solicitações DNS.
+O valor TTL deve ser definido para atingir um equilíbrio entre quanto tempo
+o valor deve ser armazenado em cache e quantas solicitações devem ir para o Resolvedor DNS.
+````
 - nao podemos colocar um alias para um ec2 dns
 - alias funciona para:
   - elastic load balancer
