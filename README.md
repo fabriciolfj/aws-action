@@ -1193,7 +1193,50 @@ Route53 health check
 Cada tipo de check permite configurar threshold de falhas, frequência de checks, falha para outras regiões AWS, e integração com sistemas de monitoring.
 Alguns recursos avançados incluem monitoramento de certificados SSL, validação de strings em requests/responses, autenticação em checks HTTP, entre outros.
 Os health checks do Route53 são uma maneira eficiente de monitorar endpoints críticos e configurar failovers automatizados.
+````
+
+# S3
+- utilizados para guardar dados, videos e etc
+- podemos colocar um arquivo de até 5 tera
+- acima de 5 tera usamos o multipart
+- para ter acesso ao bucket, temos que vincular policies a role ou iam user.
+- outra conta pode acessar nosso bucket, isso é chamado de acesso cruzado
+- embora o nome do bucket é global, ele é vinculado a região em que foi criado
+- alem das policies (restrições vinculadas direta no nosso bucket), temos também as acls, um segundo mecanismo de segurança para nosso bucket.
+  - site para gerar policies https://awspolicygen.s3.amazonaws.com/policygen.html
 ```
+ Há algumas diferenças importantes entre colocar políticas de acesso diretamente em um bucket S3 versus em um usuário IAM ou função:
+
+- Políticas no bucket (resource-based) são específicas e limitadas apenas aquele bucket. Já políticas IAM podem dar acesso ampla a vários recursos.
+
+- Políticas em bucket sobrescrevem políticas IAM, ou seja, um deny no bucket vai sobrescrever qualquer allow do IAM do usuário para aquele recurso específico.
+
+- Se você negar acesso direto no bucket, o usuário não conseguirá acessar aquele objeto mesmo que tenha permissão via IAM. O deny sempre sobrescreve o allow.
+
+- Políticas em bucket não podem ter condições complexas ou sofisticadas como as de IAM.
+
+- Administrar no bucket facilita isolar acessos por ambientes ou tipo de dados. Via IAM fica mais ampla.
+
+Então em resumo, se você colocar um deny explícito no bucket, o usuário não conseguirá acessar mesmo que seu IAM permita. 
+Estrategicamente políticas em bucket e IAM se complementam para dar os acessos necessários e também restringir o que for preciso.
+```
+### Versionamento no s3
+- posso ativar o versionamento no s3, nesse caso, ao realizar o upload de um arquivo da mesma chave (mesmo nome), o existente será versionado e o novo asumirá
+- para excluir a versão correnet, somente selecionar e excluir 
+- para excluir o arquivo inicial, ele ficará marcado para delete, para restaurar so tentar excluí-lo
+- lembrando que os arquivos ja existentes no bucket, caso seja marcado o versionamento depois, ficaram com a version null.
+
+
+### replicação no s3 (precisamos do versionamento habilitado nos buckets de origem e destino)
+- temos dois tipos de replicação no s3:
+  - CRR -> replicação em diferentes regiões, uso -> para compliance, baixa latencia
+  - SRR -> replicação na mesma região, uso -> replicar dados para ambientes diferentes como prod e qa
+- a replicação ocorre para novos objetos, após sua ativação
+- para objetos existentes, antes da ativação da replicação, temos o recurso batch replication
+- O não encadeamento de replicação de buckets no S3 significa que quando você configura a replicação de um bucket origem para um bucket de destino,
+  esse bucket de destino não continuará replicando os objetos para um outro bucket.
+- podemos tambem mandar arquivo marcado para deleção na réplica (por default isso e desmarcado), lembrando que essa marcacao e para o primeiro arquivo (não tenho mais versoes)
+- ao deletar uma versão especifica, e uma delecao permanente
 
 # Detalhes no exame
 ```
