@@ -1238,6 +1238,29 @@ Estrategicamente políticas em bucket e IAM se complementam para dar os acessos 
 - podemos tambem mandar arquivo marcado para deleção na réplica (por default isso e desmarcado), lembrando que essa marcacao e para o primeiro arquivo (não tenho mais versoes)
 - ao deletar uma versão especifica, e uma delecao permanente
 
+### politicas do clico de vida
+```
+ As políticas de ciclo de vida são recursos do Amazon S3 que permitem definir ações automáticas para transpôr, arquivar ou expirar objetos após um determinado período ou evento.
+
+Alguns pontos importantes:
+
+- Permite definir regras baseadas no tempo decorrido desde a última modificação, criação ou acesso ao objeto
+
+- As ações suportadas incluem mover entre camadas de acesso, arquivo em camadas Glacier e remoção permanente 
+
+- Podem ser usadas para automatizar descomissionamento de dados antigos, mover entre tiers de custo-benefício ou limpeza de objetos temporários
+
+- As regras são definidas no bucket, podendo se aplicar a todos objetos ou utilizar filtros por prefixo ou tags para subgroups específicos
+
+- Ajuda a governar dados para conformidade com políticas de retenção, além de gerenciar custos e necessidades funcionais
+
+- Integra-se com todas classes de armazenamento S3 como Standard, IA, Glacier e Intelligent Tiering
+
+Alguns casos de uso são: mover logs após X meses para Glacier, deletar dados processados após Y dias, transicionar para camadas IA após Z dias sem uso.
+
+As regras permitem lidar com todo ciclo de vida dos dados de modo granular e automatizado.
+```
+
 ### classes de armazenamento do s3
 ```
  As classes de armazenamento do Amazon S3 definem como os dados são armazenados e permitem balancear custo, disponibilidade e desempenho:
