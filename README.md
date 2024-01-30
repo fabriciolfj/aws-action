@@ -1238,6 +1238,140 @@ Estrategicamente políticas em bucket e IAM se complementam para dar os acessos 
 - podemos tambem mandar arquivo marcado para deleção na réplica (por default isso e desmarcado), lembrando que essa marcacao e para o primeiro arquivo (não tenho mais versoes)
 - ao deletar uma versão especifica, e uma delecao permanente
 
+### classes de armazenamento do s3
+```
+ As classes de armazenamento do Amazon S3 definem como os dados são armazenados e permitem balancear custo, disponibilidade e desempenho:
+
+S3 Standard:
+
+- Armazenamento de uso geral padrão, balanceia custo e alta disponibilidade.
+
+- Projetado para sustentar a perda de 2 instâncias simultâneas sem perda de disponibilidade e durabilidade de dados de 99,999999999%.
+
+- Replica os dados em múltiplas instâncias em uma região. 
+
+- Ideal para backups, big data, aplicações web, arquivos e mobile.
+
+S3 Standard - Infrequent Access: 
+
+- Para dados acessados com menor frequência, mas requer rápido acesso quando necessário.
+
+- Preço de armazenamento mais baixo que o Standard, mas custo de acesso maior.
+
+- Disponibilidade e durabilidade de dados iguais ao S3 Standard.
+
+S3 One Zone-Infrequent Access:
+
+- Versão de menor custo do S3 Standard-IA. 
+
+- Replica os dados em uma única zona de disponibilidade (AZ) apenas.
+
+- Menor disponibilidade e durabilidade comparado ao Standard (99,5%). 
+
+- 20% mais barato que o Standard-IA.
+
+S3 Glacier e S3 Glacier Deep Archive:
+
+- Armazenamento de objetos para dados muito pouco acessados (arquivamento).
+
+- Preços muito baixos de armazenamento, porém custo alto para acesso rápido aos dados.
+
+- Diferentes políticas temporais para acesso aos dados (de minutos a horas).
+  - amazon s3 glacier instant retrieval -> recura o dado em milisegundos, tempo minimo de armazenamento deve ser de 90 dias
+  - amazon glacier flexible retrieval -> pode recuperar o dado de 1 a 5 minuots, 3 a 5 horas ou de 5 a 12 horas (gratuito este),  tempo minimo de armazenament deve ser de 90 dias
+  - amazon glacier deep archive -> 12 a 48 horas (menor custo), tempo minímo de armazenamento deve ser 180 dias
+
+- Ideal para backups, arquivamento e conformidade.
+
+
+S3 Intelligent-Tiering
+
+- Armazenamento de objetos ideal para dados com padrões de acesso desconhecidos ou imprevisíveis. 
+
+- Move automaticamente objetos entre duas camadas acesso frequente e acesso pouco frequente com base em padrões de acesso.
+
+- Monitora padrões de acesso através de machine learning e transfere objetos para o tier mais apropriado.
+
+- Balanceia otimização de custos com desempenho e disponibilidade.
+
+- Não precisa definir ou gerenciar as camadas manualmente.
+
+- Oferece alta disponibilidade e durabilidade igual ao S3 Standard (99,999999999%).
+
+- Mais caro que o S3 Standard-IA, porém não cobra pelo monitoramento e movimentação entre tiers.
+Ele acompanha métricas de acesso aos objetos como quantidade e frequência.
+Com base em regras pré-definidas e limites quantitativos, ele decide se deve mover objetos entre as camadas.
+Por exemplo, objetos com X acessos por mês são movidos para camada frequente. Objetos com menos que Y acessos por mês são movidos para camada infrequente.
+Não há auto-aprendizado ou machine learning verdadeiro fazendo essas decisões. São regras pré-programadas.
+Porém ainda sim consegue otimizar custos de armazenamento de forma automática conforme o uso.
+
+```
+
+### Ciclo de vida
+```
+S3 Standard:
+
+Tempo de acesso: milissegundos
+Armazenamento máximo: sem limite
+Ciclo de vida: pode transicionar objetos para camadas de acesso infrequente após N dias sem uso.
+
+S3 Standard-IA:
+Tempo de acesso: milissegundos
+Armazenamento máximo: sem limite
+Ciclo de vida: pode mover para Glacier para arquivamento após X meses.
+
+S3 One Zone-IA:
+Tempo de acesso: milissegundos
+Armazenamento máx.: sem limite
+Ciclo de vida: pode deletar objetos permanententemente após período.
+
+S3 Glacier Instant Retrieval:
+Tempo acesso: milissegundos
+Armazenamento máximo: 180 dias
+Ciclo de vida: pode mover para Deep Archive após período
+
+S3 Glacier Flexible Retrieval:
+Tempo de acesso: minutos
+Armazenamento máximo: sem limite
+Ciclo de vida: pode aplicar políticas de lifecycle
+
+S3 Glacier Deep Archive:
+Tempo de acesso: horas
+Armazenamento máximo: décadas
+Mais barato que todas classes Glacier
+Políticas de lifecycle configuráveis
+```
+
+### Resumo classes s3
+```
+A classe S3 Standard provê armazenamento de propósito geral com alta performance de milissegundos e disponibilidade,
+porém custo mais elevado. Ideal para cenários como hospedagem de sites, apps, processamento frequente de dados e big data analytics.
+
+O S3 Intelligent Tiering gerencia automaticamente objetos entre camadas de alto e baixo acesso, com custo intermediário 
+e mesmo desempenho do Standard. Útil para repositórios com utilização variável, como documentos corporativos. 
+
+O S3 Standard Infrequent Access (IA) e o S3 Standard One Zone IA oferecem camadas de menor custo para dados raramente acessados,
+com alta disponibilidade e latência de milissegundos. Perfeitos para backups secundários, dados médicos antigos e streaming de vídeo sob demanda.
+
+Para arquivamento de longo prazo com custo muito reduzido por TB armazenado porém latência alta na recuperação,
+o Glacier Instant Retrieval possui restauração rápida embora armazene por no máximo 180 dias. Já o Glacier Flexible Retrieval 
+e Glacier Deep Archive podem armazenar a baixíssimo custo por décadas, sendo ideais para backups regulatórios e telemetria histórica offine.
+
+```
+
+
+### s3 request pays
+- o dono do bucket paga pelo armazenamento, e quanto alguem faz download do arquivo, paga-se também pela transferência na rede
+- podemos delegar o custo da transferência da rede ao solicitando do arquivo no bucket, desde que ele esteja autenticado na aws
+- ideal para compartilhar arquivos grandes entre contas
+
+### s3 event notifications
+- quando criamos uma replica, realizamos um upload de um arquivo ou removemos um arquivo, podemos notificar esses eventos
+- esses eventos podemos notifcar por exemplo em um sns, sqs, lambda e etc.
+- para que isso ocorra, precisa-se de policys no recurso que será notificado e não uma role no s3, por exemplo: para nodificar um sqs, lá precisa de uma policy que permita (allow) ser notificado (SendMessage)
+- quem faz o meio de campo entre s3 eventos aos recursos é o amazon eventBridge
+- por ele podemos aplicar regras (rules), como qual recurso será notificado, qual tipo de arquivo será envolvido ou tamanho do mesmo e etc.
+
 # Detalhes no exame
 ```
 O AWS WAF pode detectar a presença de código SQL que provavelmente seja mal-intencionado (conhecido como injeção de SQL). Ele também pode detectar a presença de um script que provavelmente seja mal-intencionado (conhecido como script cross-site).
