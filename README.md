@@ -1277,8 +1277,8 @@ S3 Glacier e S3 Glacier Deep Archive:
 - Preços muito baixos de armazenamento, porém custo alto para acesso rápido aos dados.
 
 - Diferentes políticas temporais para acesso aos dados (de minutos a horas).
-  - amazon s3 glacier instant retrieval -> recura o dado em milisegundos, tempo minimo de armazenamento deve ser de 90 dias
-  - amazon glacier flexible retrieval -> pode recuperar o dado de 1 a 5 minuots, 3 a 5 horas ou de 5 a 12 horas (gratuito este),  tempo minimo de armazenament deve ser de 90 dias
+  - amazon s3 glacier instant retrieval -> recupera o dado em milisegundos, tempo minimo de armazenamento deve ser de 90 dias
+  - amazon glacier flexible retrieval -> pode recuperar o dado de 1 a 5 minuots, 3 a 5 horas ou de 5 a 12 horas (gratuito este),  tempo minimo de armazenamento deve ser de 90 dias
   - amazon glacier deep archive -> 12 a 48 horas (menor custo), tempo minímo de armazenamento deve ser 180 dias
 
 - Ideal para backups, arquivamento e conformidade.
@@ -1289,8 +1289,6 @@ S3 Intelligent-Tiering
 - Armazenamento de objetos ideal para dados com padrões de acesso desconhecidos ou imprevisíveis. 
 
 - Move automaticamente objetos entre duas camadas acesso frequente e acesso pouco frequente com base em padrões de acesso.
-
-- Monitora padrões de acesso através de machine learning e transfere objetos para o tier mais apropriado.
 
 - Balanceia otimização de custos com desempenho e disponibilidade.
 
@@ -1362,13 +1360,13 @@ e Glacier Deep Archive podem armazenar a baixíssimo custo por décadas, sendo i
 
 ### s3 request pays
 - o dono do bucket paga pelo armazenamento, e quanto alguem faz download do arquivo, paga-se também pela transferência na rede
-- podemos delegar o custo da transferência da rede ao solicitando do arquivo no bucket, desde que ele esteja autenticado na aws
+- podemos delegar o custo da transferência da rede ao solicitante do arquivo no bucket, desde que ele esteja autenticado na aws
 - ideal para compartilhar arquivos grandes entre contas
 
 ### s3 event notifications
 - quando criamos uma replica, realizamos um upload de um arquivo ou removemos um arquivo, podemos notificar esses eventos
-- esses eventos podemos notifcar por exemplo em um sns, sqs, lambda e etc.
-- para que isso ocorra, precisa-se de policys no recurso que será notificado e não uma role no s3, por exemplo: para nodificar um sqs, lá precisa de uma policy que permita (allow) ser notificado (SendMessage)
+- com esses eventos podemos notifcar por exemplo em um sns, sqs, lambda e etc.
+- para que isso ocorra, precisa-se de policies no recurso que será notificado e não uma role no s3, por exemplo: para nodificar um sqs, lá precisa de uma policy que permita (allow) ser notificado (SendMessage)
 - quem faz o meio de campo entre s3 eventos aos recursos é o amazon eventBridge
 - por ele podemos aplicar regras (rules), como qual recurso será notificado, qual tipo de arquivo será envolvido ou tamanho do mesmo e etc.
 
