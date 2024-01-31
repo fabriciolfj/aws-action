@@ -1246,6 +1246,8 @@ Alguns pontos importantes:
 
 - Permite definir regras baseadas no tempo decorrido desde a última modificação, criação ou acesso ao objeto
 
+- podemos definir tempo de expiracao ou arquivos que tiveram seu upload interrompido (inacabado), para serem excluidos
+
 - As ações suportadas incluem mover entre camadas de acesso, arquivo em camadas Glacier e remoção permanente 
 
 - Podem ser usadas para automatizar descomissionamento de dados antigos, mover entre tiers de custo-benefício ou limpeza de objetos temporários
@@ -1392,6 +1394,25 @@ e Glacier Deep Archive podem armazenar a baixíssimo custo por décadas, sendo i
 - para que isso ocorra, precisa-se de policies no recurso que será notificado e não uma role no s3, por exemplo: para nodificar um sqs, lá precisa de uma policy que permita (allow) ser notificado (SendMessage)
 - quem faz o meio de campo entre s3 eventos aos recursos é o amazon eventBridge
 - por ele podemos aplicar regras (rules), como qual recurso será notificado, qual tipo de arquivo será envolvido ou tamanho do mesmo e etc.
+
+### s3 performance
+- podemos obter no maximo 3.500 put/copy/post/delete ou 5.500 get/heade requisições por segundo, por prefixo em seu bucket (prefixo é tudo entre o bucket e o arquivo, ex: buckettest/pasta/sub/file, past/sub é o prefixo)
+- multi-part upload -> recomendo para arquivos acima de 100mb, obrigatório apra acima de 5 gb, o arquivo será dividido e subirá as partes em paralelo
+- transfer acceleration -> para aumentar a transferencia de dados de um bucket de uma região para outra, é compatível com multi-part upload
+  -  mandamos o arquivo para uma borda e esta envia para o destino usando a rede interna da aws e não a publica (ex: arquivo no s3 manda para a edge location via net publica,  edge location manda para japao via rede privada da aws)
+- leitura de arquivos de forma eficiente (s2 byte range fetches), onde pega um range de byte especifico do seu arquivo
+  - pode ser usado para aumentar a velocidade do download 
+
+### s3 select & glacier select
+- podemos recuperar dados usando sql
+- podemos filtrar linhas e colunas
+- menos trafego na transferência, custo menor de cpu, pois estamos filtrando o que queremos
+
+### s3 batch operations
+- tratar varios objetos como um só
+- como: modificar vários objetos de uma so vez, aplicar acls em vários objetos, restaurar vários objetos da camada glacier, gerar um notificação para um volume de objetos
+- o exemplo mais comum seria, encriptar todos os arquivos não encriptados, ex: temos o inventario, efetuamos uma consulta (sql) para obter os objetos não encriptados, com o resultado os objetos não encriptados, mandamos uma bath operations para encriptar eles
+
 
 # Detalhes no exame
 ```
