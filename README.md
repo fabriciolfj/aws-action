@@ -1413,6 +1413,116 @@ e Glacier Deep Archive podem armazenar a baixíssimo custo por décadas, sendo i
 - como: modificar vários objetos de uma so vez, aplicar acls em vários objetos, restaurar vários objetos da camada glacier, gerar um notificação para um volume de objetos
 - o exemplo mais comum seria, encriptar todos os arquivos não encriptados, ex: temos o inventario, efetuamos uma consulta (sql) para obter os objetos não encriptados, com o resultado os objetos não encriptados, mandamos uma bath operations para encriptar eles
 
+### s3 criptografia
+- temos 2 tipos de criptografia
+  - sse (do lado do servidor, server-side encryption)
+    - usando criptografia default do s3 (sse-s3)
+      - nunca teremos acesso a essa chave 
+      - tipo é aes-256
+      - devemos fornecer o header no upload "x-amz-server-side-encryption":"256", que o objeto será encriptado
+    - usando chaves kms aws (key management service, sse-kms)
+      - mais controle e auditoria usando o cloudtrail
+      - devemos fornecedor o header "x-amz-server-side-encryption":"aws:kms", no upload do arquivo, onde busca a chave no kms e encriptará o mesmo, em seguida armazenará no bucket
+      - para consultar o objeto, precisamos também consultar a chave para decriptar, o que não acontece no caso so sse-s3
+      - isso torna uma limitação, pois devemos chamar a api do kms e depois chamar o s3, assim decriptar o objeto, gerando um aumento no tempo da requisição
+      - alem da quota por segundo no serviço kms, no entanto podemos aumentar via console.
+      - no entanto tem um mecanismo chamado "bucket-key", quando habilitado diminiu a chamada ao kms
+    - chave customiado fornecida pelo usuario (customer provider keys sse-c, possivel via cli e nao via console)
+      - a aws não armazena essa chave
+      - o usuario deve realizar upload na requisição https da chave e a aws utilizará para encriptar o arquivo
+      - e em seguida armazena-lo no bucket
+      - para decriptar, segue o mesmo processo
+  - cliente (cient-side encryption), encriptamos um objeto e realizados upload deste
+    - cliente gerencia a chave de criptografia
+    - o mesmo encripta o objeto e realiza upload do mesmo.
+- Caso tenha um objeto encriptado, por exemplo sse-s3, e mude o tipo de encriptação, para sse-kms, gerará uma nova versão o objeto com a nova criptografia
+- opcoes de criptografia possíveis via console:
+  - sse-s3
+  - sse-kms
+  - dsse-kms
+- encriptografia em transito
+  - no momento da chamada usando ssl/tls
+  - s3 expõe 2 endpotins, um para encriptar e outro não
+  - usa-se sse-c
+  - para forçar e criptografia em transico (o usuario conseguir sempre realizar requisicao https), podemos anexar uma policy com uma condition, ex:
+```
+"Condition" : {
+  "Bool" : {
+      "aws:SecureTransport":"true"
+  
+  }
+
+}
+```
+- a criptografia padrão (sse-s3) há habilitada por padrão, mas podemos forçar o uso de outra tipo de criptografia via policy, visto que esta é avaliada antes de subir ou realizar 
+  upload do arquivo.
+- ex:
+```
+
+sse-kms
+{
+    "Version": "2012-10-17",    
+    "Statement": [
+        {
+            "Sid": "EnforceSSEKMS",
+            "Effect": "Deny",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::mybucket/*",
+            "Condition": {
+                "Null": {
+                    "s3:x-amz-server-side-encryption": "aws:kms"
+                }
+            }
+        }
+    ]
+}
+
+sse-c
+{
+  "Version":"2012-10-17",
+  "Id": "PutObjPolicy",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureCiphers",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::mybucket/*",
+      "Condition": {
+        "StringNotEquals": {"s3:x-amz-server-side-encryption-customer-algorithm": "AES256"}
+      }
+    } 
+  ]  
+}
+```
+### se3 cors
+
+```
+ CORS (Compartilhamento de Recursos de Origem Cruzada) é um mecanismo que define como um recurso (por exemplo, uma fonte JavaScript) em um domínio pode interagir com outro recurso em um diferente domínio.
+
+Alguns pontos importantes:
+
+- Origem Cruzada se refere a requisições HTTP de um domínio diferente daquele que serviu o conteúdo original.
+
+- Por padrão, requisições CORS são bloqueadas por razões de segurança, a menos que habilitadas via headers.
+
+- Os principais headers relacionados ao CORS são:
+    - Access-Control-Allow-Origin: Define quais origens podem acessar o recurso.
+    - Access-Control-Allow-Methods: Métodos permitidos na requisição.
+    - Access-Control-Allow-Headers: Headers permitidos na requisição.
+    - Access-Control-Max-Age: Quanto tempo o browser pode cachear essa permissão de acesso.
+
+- No S3, o CORS precisa ser explicitamente habilitado em um bucket para permitir que aplicações em outros domínios acessem os objetos.
+
+Então o CORS provê uma forma segura dos navegadores permitirem requests de origem cruzada entre diferentes domínios. É essencial para muitos casos de uso em aplicações web modernas.
+```
+- cenário de uso:
+  - browser faz uma requisicao ao bucket A
+  - a pagina carrega do bucket A, precisa de uma imagem no bucket B
+  - o browser precisa entao informar a origem no cabeçalho "Access-Control-Allow-Origin:http://bucketA" para pegar a imagem no bucket B
+  - se o cors estiver habilitado, e permitir requisão dessa origem, funcionária
+  - se o cors estiver desabilitado *, funcionária
+  - caso contrário não
 
 # Detalhes no exame
 ```
