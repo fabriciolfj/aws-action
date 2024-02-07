@@ -1524,6 +1524,42 @@ Então o CORS provê uma forma segura dos navegadores permitirem requests de ori
   - se o cors estiver desabilitado *, funcionária
   - caso contrário não
 
+### s3 exclusao mfa
+- para habilitar o mfa no upload de arquivo, devemos fazer via cli
+- o mesmo ocorre para delete, precisa ser via cli com mfa ativado
+
+### s3 access log
+- quando queremos monitorar tudo o que ocorre em um bucket, gera-se logs que são enviados para outro bucket
+- nunca podemos usar o bucket monitorado para gravar os logs, pois entrará em um loop infinito
+- obs os buckets devem estar na mesma regiao
+
+### se urls pre assinadas (pre signed urls)
+- podemos gerar urls temporarias, afim de disponibilizar a outros usuarios para: efetuar donwload de algum arquivo ou upload
+- a url e temporaria e nosso objeto no bucket pode permanecer privado
+- a url corresponde a um objeto dentro do bucket
+
+###  s3 glacier vault lock
+- a ideia é escrever uma vez e ler muitas vzes
+- ou seja, evitar motificacao de arquivos no glacier
+- para isso precismos criar uma policy no nosso glacier (vault lock policy)
+- para usar o object lock, o versionamento deve estar habilitado
+  - podemos criar policiy para o objeto em específico e não para o bucket inteiro
+  - segue a mesma ideia, escreva uma vez, leia várias
+  - temos alguns modos de retencao
+    - compliance: as versões não podem ser sobrescritas por todos os usuarios, incluindo o root e tambem as configuracoes de modo por ex, não podem ser modificadas.
+    - governance: a maioria dos usuários não pode anular ou excluir uma versao do objeto ou alterar suas configurações de bloqueio, mas usuarios adm com permissoes (iam) podem
+  - periodo de retencao: podemos aplicar os modos por um perido fixo
+  - legal hold: protege qualquer object por um periodo de retencao indefinido, somente usuarios com a role s3:putObjetLegalHold que podem remove-los
+
+### s3 access points
+- facilita a gestao do bucket, ou cada ponto de acesso terá seu dns
+- podemos anexar a cada ponto uma policy
+
+### s3 lambda
+- colocar código para modificar e processar dados, conforme eles são recebidos ou recuperados do bucket
+- exemplo de uso: xml armazenado no bucket, quero recuperar o mesmo no formato json
+  - crio um access point, bate no lambda, que pega o o objeto, transforma em json, retorna para o access point que por sua vez, o solicitante o recebe 
+
 # Detalhes no exame
 ```
 O AWS WAF pode detectar a presença de código SQL que provavelmente seja mal-intencionado (conhecido como injeção de SQL). Ele também pode detectar a presença de um script que provavelmente seja mal-intencionado (conhecido como script cross-site).
