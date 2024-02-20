@@ -1560,8 +1560,161 @@ Então o CORS provê uma forma segura dos navegadores permitirem requests de ori
 - exemplo de uso: xml armazenado no bucket, quero recuperar o mesmo no formato json
   - crio um access point, bate no lambda, que pega o o objeto, transforma em json, retorna para o access point que por sua vez, o solicitante o recebe 
 
+
+# Aws cloud front
+- CDN - content delivery network
+
+```
+CDN (Content Delivery Network) é uma rede distribuída de servidores que entrega conteúdo estático (como imagens, vídeos, arquivos CSS e JavaScript) aos 
+usuários com base na sua localização geográfica. A ideia principal de um CDN é fornecer conteúdo de forma mais rápida e eficiente aos usuários finais.
+
+No contexto da AWS (Amazon Web Services), a Amazon disponibiliza um serviço de CDN chamado Amazon CloudFront. O CloudFront é um serviço de entrega de 
+conteúdo rápida, segura e programável que utiliza uma rede global de data centers, conhecidos como "Edge Locations".
+
+Quando você hospeda seu conteúdo estático no Amazon CloudFront, a AWS distribui automaticamente e armazena esse conteúdo em vários data centers
+estrategicamente localizados em diferentes regiões ao redor do mundo. Dessa forma, quando um usuário solicita um arquivo (como uma imagem ou um script JavaScript),
+ o CloudFront entrega esse conteúdo a partir da "Edge Location" mais próxima do usuário, reduzindo a latência e aumentando a velocidade de carregamento.
+
+O CloudFront também oferece recursos adicionais, como:
+
+- Gerenciamento de cache e TTL (Time to Live) para controlar quanto tempo o conteúdo é armazenado em cache nas "Edge Locations".
+- Integração com outras soluções da AWS, como o Amazon S3, Amazon ELB, Amazon EC2, entre outras.
+- Suporte a HTTPS e recursos de segurança, como firewalls de aplicação web (WAF) e criptografia.
+- Relatórios e logs detalhados sobre o tráfego de conteúdo.
+
+Em resumo, o CDN da AWS (Amazon CloudFront) é um serviço que permite armazenar e distribuir conteúdo estático de forma global,
+minimizando a latência e proporcionando uma experiência mais rápida para os usuários finais.
+```
+- origens:
+  - s2 bucket
+  - custom http
+    - alb
+    - ec2
+    - s3 website static
+    - qualquer http backend
+- funcionamento:
+  - cliente solicita o recurso no cloud front edge location
+  - verifica-se se o recurso esta no cache do cloud front edge location
+  - caso não esteja, vá ate a origem e retorne-o (coloca no cache e envia ao cliente)
+  - na segunda requisição, caso o recurso ja esteja no cache, já é retornado, sem necessidade de ir ate a origem
+
+
+## Cludfront vs s3 cross region replication
+```
+A principal diferença entre o Amazon CloudFront e a Replicação Cross-Region do Amazon S3 é o propósito e a forma como eles entregam o conteúdo.
+
+Amazon CloudFront:
+- É um serviço de CDN (Content Delivery Network) que distribui conteúdo estático (como imagens, vídeos, arquivos CSS, JavaScript) em cache através de várias "Edge Locations" ao redor do mundo.
+- O objetivo principal é oferecer entrega de conteúdo com baixa latência e alta velocidade para os usuários finais, independentemente da localização geográfica.
+- O CloudFront atua como uma camada intermediária entre o armazenamento de origem (como o S3) e os usuários finais, armazenando o conteúdo em cache mais próximo dos usuários.
+
+Replicação Cross-Region do Amazon S3:
+- É um recurso do Amazon S3 que replica automaticamente os objetos de um bucket de origem para um ou mais buckets de destino em diferentes regiões da AWS.
+- O objetivo é fornecer resiliência, disponibilidade e acesso rápido aos dados em várias regiões, caso ocorra uma interrupção em uma determinada região.
+- A replicação é feita diretamente entre os buckets do S3 nas diferentes regiões, sem envolver uma CDN.
+
+Em resumo, o CloudFront é projetado para melhorar a velocidade de entrega de conteúdo para os usuários finais, enquanto a replicação cross-region do S3 é projetada para garantir a disponibilidade e resiliência dos dados em várias regiões.
+
+Embora sejam recursos diferentes, eles podem ser usados em conjunto. Por exemplo, você pode configurar um bucket S3 como origem para o CloudFront e usar a replicação cross-region para manter cópias dos dados em várias regiões, garantindo alta disponibilidade e entrega rápida de conteúdo simultaneamente.
+```
+
+### access control cloudfront
+```
+O Access Control (Controle de Acesso) no Amazon CloudFront refere-se a um conjunto de recursos e configurações que permitem controlar quem pode acessar o conteúdo armazenado e distribuído pelo CloudFront.
+
+Alguns dos principais recursos de controle de acesso do CloudFront incluem:
+
+1. **Restrições de Acesso**: Você pode configurar restrições de acesso para restringir acesso a seu conteúdo com base em uma lista de controle de acesso (ACL), endereços IP ou assinaturas de URL seguras.
+
+2. **Assinaturas de URL Seguras**: Permite que você distribua conteúdo privado adicionando assinaturas criptográficas a URLs do CloudFront. Essas assinaturas determinam quem pode acessar seu conteúdo e por quanto tempo.
+
+3. **Origem de Acesso**: Você pode controlar quais origens (como buckets do S3 ou servidores web) podem fornecer conteúdo para o CloudFront.
+
+4. **Campos Personalizados**: Permite adicionar cabeçalhos personalizados às solicitações e respostas do CloudFront, para casos de uso como controle de acesso baseado em cabeçalhos.
+
+5. **Gerar Políticas**: Você pode gerar políticas personalizadas de controle de acesso para aplicar restrições mais complexas.
+
+6. **Integração com AWS WAF** (Web Application Firewall): Permite proteger seu conteúdo contra ameaças comuns na Web, como SQL injection e scripts intersites.
+
+Essas configurações ajudam a garantir que apenas usuários autorizados possam acessar seu conteúdo distribuído pelo CloudFront, protegendo recursos privados ou confidenciais. É essencial configurar corretamente esses controles para evitar acesso não autorizado ao seu conteúdo.
+```
+
+### preco cloudfront
+- dependi da regiao aonde aplicará o edge location
+- quando maior a transferencia, menor será o valor
+- temos 3 classes
+  -  todas as regiones - melhor performance
+  - class 200, maioria das regiões, excluindo as mais caras
+  - class 100, incluindo apenas as mais baratas
+
+### invalidando cache no cloudfront
+```
+Existem duas principais maneiras de invalidar o cache no Amazon CloudFront:
+
+1. **Invalidação de Objetos**:
+   - Esse método permite invalidar (remover) objetos específicos do cache nas "Edge Locations" do CloudFront.
+   - Você pode especificar caminhos de objeto individuais ou usar curingas para invalidar grupos de objetos de uma só vez.
+   - É útil quando você atualiza um arquivo específico e deseja forçar os usuários a receber a nova versão.
+   - Pode ser feito através da console do CloudFront, da API ou de ferramentas de CLI.
+
+2. **Redefinição de Cache**:
+   - Essa opção remove todos os objetos em cache em todas as "Edge Locations" do CloudFront.
+   - É útil quando você faz alterações significativas em seu site ou aplicativo e deseja garantir que todos os usuários recebam a versão mais recente do conteúdo.
+   - É uma operação mais agressiva e pode levar mais tempo para ser concluída em comparação com a invalidação de objetos.
+   - Também pode ser feita através da console, API ou CLI.
+
+Ao invalidar ou redefinir o cache, o CloudFront deve obter a versão mais recente dos objetos solicitados da origem configurada (por exemplo, um bucket S3 ou servidor web) antes de enviá-los para o cliente.
+
+É importante notar que a invalidação e redefinição de cache podem gerar custos adicionais no CloudFront, dependendo da quantidade de dados invalidados. Portanto, é recomendado invalidar apenas o conteúdo necessário e com moderação.
+
+Além disso, você também pode configurar cabeçalhos de Cache-Control ou Expires adequados na origem para determinar por quanto tempo os objetos devem ser armazenados em cache nas "Edge Locations" do CloudFront.
+```
+
+# Aws global accelerator
+```
+O AWS Global Accelerator é um serviço que melhora a disponibilidade e o desempenho das aplicações que usam o protocolo IP sobre a Internet. Ele aproveita a infraestrutura global da AWS para otimizar o roteamento e a entrega de tráfego através da rede.
+
+O Global Accelerator funciona da seguinte maneira:
+
+1. **Endereços IP Estáticos Globais**: Quando você configura o Global Accelerator, ele fornece dois endereços IP estáticos globais que atuam como pontos de entrada para o tráfego da sua aplicação.
+
+2. **Pontos de Presença Globais**: A AWS possui Pontos de Presença Globais (Global Points of Presence - GPPs) espalhados pelo mundo. Esses pontos de presença são servidores da AWS que estão próximos a concentrações significativas de usuários.
+
+3. **Roteamento Otimizado**: Quando um cliente acessa sua aplicação pelo endereço IP estático global, o Global Accelerator encaminha o tráfego através do ponto de presença mais próximo do cliente. Em seguida, o tráfego é roteado através da rede global da AWS para o recurso de destino (como um Elastic Load Balancing, EC2 ou outros serviços).
+
+4. **Failover Automático**: Se alguma parte da rede ou do recurso de destino falhar, o Global Accelerator automaticamente redireciona o tráfego para caminhos alternativos saudáveis, mantendo a alta disponibilidade da aplicação.
+
+5. **Otimização de Desempenho**: O Global Accelerator usa técnicas de otimização de rede, como o protocolo de transporte otimizado e o roteamento inteligente, para melhorar o desempenho e a estabilidade da conexão.
+
+Alguns benefícios do AWS Global Accelerator incluem:
+
+- **Melhor Desempenho**: Reduz a latência e o tempo de resposta para carregamento de aplicações, transferência de dados e chamadas de API.
+- **Alta Disponibilidade**: Failover automático e caminhos de rede redundantes garantem que a aplicação permaneça disponível em caso de falhas.
+- **Endereços IP Estáticos**: Facilita a configuração de DNS e evita problemas com endereços IP flutuantes.
+- **Segurança**: O tráfego é roteado pela rede global privada da AWS, oferecendo mais segurança.
+
+O Global Accelerator é especialmente útil para aplicações que exigem baixa latência e alta disponibilidade em escala global, como jogos online, streaming de mídia, provedores de VoIP e outros serviços de Internet.
+```
+
 # Detalhes no exame
 ```
+Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
+
+
+Para forçar os usuários a acessarem o site estático somente através do CloudFront e não diretamente pelo bucket S3, você pode seguir estes passos:
+
+Configurar o acesso público do bucket S3 para "Bloquear todo o acesso público":
+Acesse as propriedades do bucket S3 que hospeda o site estático.
+Na seção "Permissões", em "Bloquear configuração de acesso público (configuração de bucket)", clique em "Editar".
+Marque todas as opções para bloquear o acesso público.
+Salve as mudanças.
+Criar uma Política de Bucket para permitir acesso somente ao CloudFront:
+Abra o console do AWS S3 e navegue até o bucket que hospeda o site estático.
+Acesse a seção "Permissões" e clique em "Política do bucket".
+Substitua a política existente pela seguinte (substitua [ACCOUNT_ID] pelo seu ID de conta AWS e [DISTRIBUTION_ID] pelo ID da sua distribuição CloudFront):
+================================================================================================================================================
+
+
 O AWS WAF pode detectar a presença de código SQL que provavelmente seja mal-intencionado (conhecido como injeção de SQL). Ele também pode detectar a presença de um script que provavelmente seja mal-intencionado (conhecido como script cross-site).
 
 Para obter mais informações sobre o AWS WAF, consulte AWS WAF.
