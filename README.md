@@ -1696,6 +1696,159 @@ Alguns benefícios do AWS Global Accelerator incluem:
 O Global Accelerator é especialmente útil para aplicações que exigem baixa latência e alta disponibilidade em escala global, como jogos online, streaming de mídia, provedores de VoIP e outros serviços de Internet.
 ```
 
+# Aws snowball
+```
+O AWS Snowball é um serviço de transferência de dados físicos oferecido pela Amazon Web Services (AWS). É projetado para permitir o transporte seguro de grandes quantidades de dados entre os locais do cliente e o armazenamento na nuvem AWS.
+
+O AWS Snowball consiste em dispositivos de armazenamento físico, chamados de "Snowballs", que são enviados pelo correio para os clientes. Esses dispositivos são projetados para transferir dados de maneira segura, rápida e econômica, especialmente quando a transferência pela Internet é impraticável devido a limitações de largura de banda, altos custos ou necessidades de conformidade.
+
+Cada Snowball é um dispositivo resistente e seguro, com capacidade de armazenamento que varia de 50 TB a 80 TB. Os clientes podem transferir seus dados para o Snowball usando uma conexão de alta velocidade, como uma interface de 10 Gb ou 40 Gb. Depois de transferir os dados, eles devolvem o Snowball para a AWS, onde os dados são importados automaticamente para serviços de armazenamento de dados, como o Amazon S3 ou o Amazon EFS.
+
+O AWS Snowball oferece várias opções para atender às necessidades de transferência de dados dos clientes:
+
+1. **AWS Snowball Edge**: Uma opção de computação na borda que permite executar análises e processamento de dados no próprio dispositivo antes de transferir os dados para a nuvem.
+
+2. **AWS Snowball Edge Compute Optimized**: Otimizado para análises avançadas na borda, com recursos de computação poderosos.
+
+3. **AWS Snowmobile**: Um serviço para transferências de dados em uma escala exabyte, envolvendo um contêiner seguro de 45 pés que pode transportar até 100 PB de dados.
+
+O AWS Snowball utiliza criptografia de dados e várias camadas de segurança física e lógica para proteger os dados dos clientes durante todo o processo de transferência. Ele também oferece recursos de rastreamento e monitoramento para acompanhar o progresso e o status da transferência de dados.
+
+O AWS Snowball é amplamente utilizado em setores como mídia e entretenimento, saúde, finanças e governo, onde grandes quantidades de dados precisam ser transferidas de forma segura e confiável.
+```
+
+## Enviando dados para um s3 glacier
+```
+Não é possível enviar dados diretamente do AWS Snowball para o Amazon S3 Glacier. O processo correto é:
+
+1. Enviar os dados do Snowball para um bucket padrão do Amazon S3.
+
+2. Configurar uma Política de Ciclo de Vida (Lifecycle Policy) nesse bucket S3 para mover os objetos para o S3 Glacier após um determinado período de tempo.
+
+A razão para isso é que o Glacier não aceita uploads diretos. Ele é projetado para ser uma solução de arquivamento de baixo custo, que recebe dados do Amazon S3 através de transições automáticas definidas pelas Políticas de Ciclo de Vida.
+
+Portanto, os passos corretos são:
+
+1. Ao criar um trabalho de importação no Snowball, selecione um bucket padrão do Amazon S3 como destino.
+
+2. Transferir os dados para o Snowball e devolvê-lo à AWS.
+
+3. Os dados serão importados para o bucket S3 selecionado.
+
+4. Criar uma Política de Ciclo de Vida nesse bucket, especificando que os objetos devem ser movidos para o Glacier após um determinado período de tempo (por exemplo, 30 dias).
+
+Com essa abordagem, os dados são enviados primeiro para o Amazon S3 e, em seguida, transicionados automaticamente para o Glacier, de acordo com a Política de Ciclo de Vida configurada. Isso garante que os dados sejam transferidos corretamente para o serviço de arquivamento de baixo custo do Glacier.
+```
+
+# Aws fsx
+``` 
+O Amazon FSx (File System for AWS) é um serviço totalmente gerenciado que fornece sistemas de arquivos compartilhados para cargas de trabalho corporativas. O FSx permite criar e configurar sistemas de arquivos rapidamente, dimensionar conforme necessário e pagar apenas pelo recurso consumido.
+
+Certo, vou explicar os 4 principais tipos de sistema de arquivos oferecidos pelo Amazon FSx:
+
+1. **Amazon FSx for Windows File Server**:
+   - Sistema de arquivos totalmente gerenciado, compatível com o Windows nativo, baseado no protocolo SMB (Server Message Block).
+   - Suporta todos os recursos e metadados do Windows, como permissões NTFS, cotas de disco, shadow copies e replicação DFS.
+   - Ideal para cargas de trabalho corporativas, como home directories, compartilhamento de arquivos, aplicativos baseados em servidor, análises e processamento de dados.
+
+2. **Amazon FSx for Lustre**:
+   - Sistema de arquivos de alto desempenho, altamente paralelo e compatível com POSIX, baseado no sistema de arquivos Lustre de código aberto.
+   - Projetado para cargas de trabalho de computação de alto desempenho (HPC), como simulações numéricas, análise de big data, computação de machine learning e processamento de mídia.
+   - Suporta streaming de dados paralelo de alto rendimento com baixa latência e alta taxa de transferência.
+
+3. **Amazon FSx for NetApp ONTAP**:
+   - Sistema de arquivos gerenciado baseado no ONTAP da NetApp, fornecendo armazenamento em bloco e sistema de arquivos.
+   - Destinado a cargas de trabalho empresariais que exigem recursos avançados de gerenciamento de dados e armazenamento, como snapshots, replicação, clonagem de dados e muito mais.
+   - Suporta tanto protocolos NFS (Network File System) quanto SMB (Server Message Block).
+
+4. **Amazon FSx for OpenZFS**:
+   - Sistema de arquivos de alto desempenho, altamente duradouro e distribuído, baseado no OpenZFS de código aberto.
+   - Projetado para cargas de trabalho que exigem alto desempenho, durabilidade de dados e recursos avançados de gerenciamento de dados, como snapshots, compactação de dados e recuperação automática de dados corrompidos.
+   - Suporta protocolos NFS e SMB e é ideal para aplicativos empresariais, big data, análises e cargas de trabalho de arquivos.
+
+Esses são os quatro principais tipos de sistemas de arquivos oferecidos pelo Amazon FSx, cada um projetado para atender a diferentes requisitos e cargas de trabalho específicas. A escolha dependerá das necessidades de desempenho, compatibilidade, recursos de gerenciamento de dados e protocolos de arquivo suportados para a carga de trabalho em questão.
+```
+
+## tipos aws fsx
+```
+O Amazon FSx suporta dois tipos principais de sistemas de arquivos: scratch file system e persistent file system.
+
+1. **Scratch File System**:
+   - O scratch file system é um sistema de arquivos temporário otimizado para cargas de trabalho de computação de alto desempenho (HPC) que geram grandes quantidades de dados temporários.
+   - Ele é implantado em uma única instância do Amazon EC2 e fornece armazenamento de dados efêmero para essa instância.
+   - Os dados armazenados no scratch file system são perdidos quando a instância do EC2 é interrompida ou encerrada.
+   - O scratch file system é uma opção econômica e de alto desempenho para processamento de dados temporários, como simulações numéricas, renderização de mídia e análise de dados.
+
+2. **Persistent File System**:
+   - O persistent file system é um sistema de arquivos duradouro projetado para armazenar dados de longo prazo.
+   - Ele é implantado como um recurso separado na AWS e pode ser acessado por várias instâncias do EC2 simultaneamente.
+   - Os dados armazenados no persistent file system são mantidos mesmo quando as instâncias do EC2 são interrompidas ou encerradas.
+   - O persistent file system oferece durabilidade de dados, alta disponibilidade, backup automático e recursos de replicação para resiliência e recuperação de desastres.
+   - É adequado para cargas de trabalho que exigem armazenamento persistente, como home directories, compartilhamento de arquivos, análises e processamento de dados de longo prazo.
+
+A escolha entre o scratch file system e o persistent file system depende da natureza da carga de trabalho e dos requisitos de durabilidade de dados. O scratch file system é uma opção adequada para processamento temporário e de alto desempenho, enquanto o persistent file system é preferível para cargas de trabalho que exigem armazenamento duradouro e recursos avançados de gerenciamento de dados.
+
+É importante considerar cuidadosamente as necessidades da carga de trabalho ao escolher entre esses dois tipos de sistemas de arquivos no Amazon FSx.
+```
+
+# Aws storage gateway
+- é uma ponte dos seus dados no local e dos dados da sua nuvem
+- casos de uso:
+  - recuperação de desastres
+  - backup 
+  - tipos de armazenamentos
+  - uso onprimeses como cache e os dados persistentes na nuvem
+
+## tipos aws storage gateway
+```
+O AWS Storage Gateway é um serviço que fornece uma interface de armazenamento na nuvem para integração com ambientes locais. 
+Ele permite que os clientes aproveitem o armazenamento em nuvem, como o Amazon S3, Amazon EFS ou Amazon FSx, ao mesmo tempo em que mantêm 
+parte dos dados localmente para acesso com baixa latência. O Storage Gateway oferece quatro tipos principais de configuração:
+
+1. **S3 File Gateway (Gateway de Arquivos)**: Permite que os clientes armazenem e recuperem dados em arquivos através do protocolo 
+NFS (Network File System) ou SMB (Server Message Block). Os dados são armazenados no Amazon S3 e cacheados localmente no gateway para acesso rápido (os mais recentes).
+Não funciona com o s3 glacier
+Se utilizar o SMB protocol, para integracao com o active directory, os usuarios podem se autenticar para acessar o diretorio no bucket s3
+
+2. **Volume Gateway (Gateway de Volume)**: O Volume Gateway oferece dois métodos para acessar o armazenamento em blocos na nuvem:
+Volume em disco (Stored Volumes): Nesse modo, você armazena seus dados localmente e faz backups assíncronos de volumes inteiros para a Amazon S3.
+Volume em cache (Cached Volumes): Nesse modo, seus dados são armazenados primariamente na AWS e apenas os dados frequentemente acessados são mantidos em cache localmente. Isso minimiza a latência de acesso aos dados.
+É útil para cargas de trabalho que requerem acesso a blocos de armazenamento, como bancos de dados ou aplicativos que precisam de um sistema de arquivos local rápido.
+
+3. **Tape Gateway (Gateway de Fita)**:  permite que você substitua as infraestruturas de bibliotecas de fita física por um gateway virtual que simula bibliotecas de fita para backups e arquivamento.
+Ele é ideal para cargas de trabalho que dependem de bibliotecas de fita para backups de longo prazo e requisitos de conformidade.
+O Tape Gateway oferece suporte a protocolos de fita virtuais, como VTL (Virtual Tape Library), para que aplicativos existentes possam ser configurados para usar a fita virtual sem modificações.
+ 
+
+4. **FSx File Gateway (Gateway de Arquivos FSx)**: 
+Integração com Amazon FSx: O FSx File Gateway facilita a integração entre seus sistemas de arquivos locais e os sistemas de arquivos Amazon FSx. Ele permite que você acesse e
+ gerencie arquivos no Amazon FSx como se estivessem localmente montados em seu ambiente.
+ 
+Recursos de Gateway de Arquivos: O FSx File Gateway oferece funcionalidades semelhantes ao File 
+Gateway padrão do AWS Storage Gateway, permitindo que você acesse arquivos em sistemas de arquivos Amazon FSx 
+por meio de protocolos de rede padrão, como NFS (Network File System) ou SMB (Server Message Block).
+
+Replicação de Dados: Você pode configurar a replicação de dados entre seus sistemas de arquivos locais e os 
+sistemas de arquivos Amazon FSx, garantindo que seus dados estejam sincronizados e protegidos.
+
+Suporte a Casos de Uso Diversos: O FSx File Gateway é útil para uma variedade de casos de uso, incluindo migração de dados para a nuvem,
+ recuperação de desastres, arquivamento e compartilhamento de arquivos entre locais.
+
+Integração com Infraestrutura Existente: Como parte do AWS Storage Gateway, o FSx File Gateway é projetado para integrar-se facilmente com a infraestrutura existente e aplicativos, permitindo uma migração suave para a nuvem.
+
+
+Cada tipo de gateway é projetado para atender a diferentes casos de uso e requisitos. O File Gateway e o FSx File Gateway 
+são ideais para compartilhamento de arquivos, enquanto o Volume Gateway é adequado para cargas de trabalho de armazenamento em bloco. 
+O Tape Gateway é uma solução para backup na nuvem e arquivamento de dados.
+
+Ao escolher o tipo de gateway, é importante considerar os requisitos de acesso local, protocolos suportados, integração com aplicativos
+ existentes e a necessidade de armazenamento em cache local para garantir o desempenho ideal para a carga de trabalho específica.
+```
+## hardware appliance
+- caso não tenha um servidor virtual, pode solicitar um servidor virtual on-primeses na aws
+- e configura-loa como um file gateway
+
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
