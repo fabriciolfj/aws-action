@@ -1759,7 +1759,7 @@ Certo, vou explicar os 4 principais tipos de sistema de arquivos oferecidos pelo
 3. **Amazon FSx for NetApp ONTAP**:
    - Sistema de arquivos gerenciado baseado no ONTAP da NetApp, fornecendo armazenamento em bloco e sistema de arquivos.
    - Destinado a cargas de trabalho empresariais que exigem recursos avançados de gerenciamento de dados e armazenamento, como snapshots, replicação, clonagem de dados e muito mais.
-   - Suporta tanto protocolos NFS (Network File System) quanto SMB (Server Message Block).
+   - Suporta tanto protocolos ISCSI, NFS (Network File System) quanto SMB (Server Message Block).
 
 4. **Amazon FSx for OpenZFS**:
    - Sistema de arquivos de alto desempenho, altamente duradouro e distribuído, baseado no OpenZFS de código aberto.
@@ -1783,7 +1783,7 @@ O Amazon FSx suporta dois tipos principais de sistemas de arquivos: scratch file
    - O persistent file system é um sistema de arquivos duradouro projetado para armazenar dados de longo prazo.
    - Ele é implantado como um recurso separado na AWS e pode ser acessado por várias instâncias do EC2 simultaneamente.
    - Os dados armazenados no persistent file system são mantidos mesmo quando as instâncias do EC2 são interrompidas ou encerradas.
-   - O persistent file system oferece durabilidade de dados, alta disponibilidade, backup automático e recursos de replicação para resiliência e recuperação de desastres.
+   - O persistent file system oferece durabilidade de dados, alta disponibilidade, backup automático e recursos de replicação (az) para resiliência e recuperação de desastres.
    - É adequado para cargas de trabalho que exigem armazenamento persistente, como home directories, compartilhamento de arquivos, análises e processamento de dados de longo prazo.
 
 A escolha entre o scratch file system e o persistent file system depende da natureza da carga de trabalho e dos requisitos de durabilidade de dados. O scratch file system é uma opção adequada para processamento temporário e de alto desempenho, enquanto o persistent file system é preferível para cargas de trabalho que exigem armazenamento duradouro e recursos avançados de gerenciamento de dados.
@@ -1819,10 +1819,17 @@ Volume em cache (Cached Volumes): Nesse modo, seus dados são armazenados primar
 Ele é ideal para cargas de trabalho que dependem de bibliotecas de fita para backups de longo prazo e requisitos de conformidade.
 O Tape Gateway oferece suporte a protocolos de fita virtuais, como VTL (Virtual Tape Library), para que aplicativos existentes possam ser configurados para usar a fita virtual sem modificações.
  
-
 4. **FSx File Gateway (Gateway de Arquivos FSx)**: 
 Integração com Amazon FSx: O FSx File Gateway facilita a integração entre seus sistemas de arquivos locais e os sistemas de arquivos Amazon FSx. Ele permite que você acesse e
  gerencie arquivos no Amazon FSx como se estivessem localmente montados em seu ambiente.
+oferece acesso de baixa latência a arquivos do FSx for Windows File Server on-premises, além de outros benefícios, como:
+Fácil de usar: O File Gateway é fácil de configurar e gerenciar, com uma interface intuitiva e documentação abrangente.
+Altamente disponível: O File Gateway oferece alta disponibilidade, garantindo que seus arquivos estejam sempre acessíveis.
+Escalável: O File Gateway é escalável, podendo ser dimensionado para atender às suas necessidades de armazenamento e desempenho.
+No entanto, é importante considerar algumas diferenças entre o Direct Connect e o File Gateway:
+Conectividade: O Direct Connect estabelece uma conexão dedicada e privada entre sua rede local e a AWS, enquanto o File Gateway utiliza a internet pública para comunicação.
+Funcionalidade: O Direct Connect é apenas um serviço de conectividade, enquanto o File Gateway oferece funcionalidades adicionais, como cache local e otimização de acesso a arquivos.
+Custo: O Direct Connect pode ser mais caro que o File Gateway, especialmente se você precisar de uma grande largura de banda.
  
 Recursos de Gateway de Arquivos: O FSx File Gateway oferece funcionalidades semelhantes ao File 
 Gateway padrão do AWS Storage Gateway, permitindo que você acesse arquivos em sistemas de arquivos Amazon FSx 
@@ -1847,6 +1854,80 @@ Ao escolher o tipo de gateway, é importante considerar os requisitos de acesso 
 ## hardware appliance
 - caso não tenha um servidor virtual, pode solicitar um servidor virtual on-primeses na aws
 - e configura-loa como um file gateway
+
+# Diferença entre aws storage gateway com o fsx
+```
+Tanto o Amazon FSx e o AWS Storage Gateway são serviços da AWS relacionados a armazenamento de dados, mas eles possuem finalidades e funcionalidades distintas. Vejamos as principais diferenças:
+
+FSx (File System Service):
+
+Foco: Armazenamento de arquivos de alto desempenho e escalável na nuvem.
+Funcionalidade: Projetado para oferecer acesso rápido a arquivos por aplicativos e usuários.
+Serviços: FSx for Windows File Server, FSx for Lustre, FSx for NetApp ONTAP.
+Casos de uso: Compartilhamento de arquivos corporativos, armazenamento de dados para aplicativos, backups, análise de dados, HPC.
+Vantagens: Alto desempenho, escalabilidade, fácil de usar, integração com outros serviços AWS.
+Storage Gateway:
+
+Foco: Ponte entre armazenamento on-premises e armazenamento em nuvem AWS (S3, Glacier).
+Funcionalidade: Sincroniza dados on-premises com a nuvem, oferecendo acesso de baixa latência e backup seguro.
+Tipos de Gateway: Cache Gateway, File Gateway, Tape Gateway.
+Casos de uso: Backup e arquivamento de dados, compartilhamento de arquivos entre locais, hospedagem de sites estáticos.
+Vantagens: Armazenamento escalável e econômico, backup e recuperação de desastres, integração com aplicativos existentes.
+```
+
+# Aws transfer family
+- para usar o s3 ou efs como um protocolo ftp (ftp, ftps, sftp)
+- para transferir dados via ftp
+
+# Aws datasync
+```
+O AWS DataSync é um serviço online seguro que automatiza e acelera a transferência de dados entre serviços de armazenamento on-premises e da AWS. Ele também pode ser usado para transferir dados entre os serviços de armazenamento da AWS.
+
+Funcionalidades do AWS DataSync:
+
+Transferência de dados segura e confiável: O DataSync usa criptografia em repouso e em trânsito para garantir a segurança dos seus dados. Ele também oferece recursos de monitoramento e relatórios para que você possa acompanhar o progresso das suas transferências de dados.
+Automação de tarefas: O DataSync permite automatizar a transferência de dados, incluindo agendamento de transferências, configuração de filtros de arquivos e definição de políticas de retry.
+Suporte para diversos serviços de armazenamento: O DataSync oferece suporte a uma ampla gama de serviços de armazenamento on-premises e da AWS, incluindo Amazon S3, Amazon EBS, Amazon FSx, Azure Blob Storage, Google Cloud Storage, NFS e SMB.
+Fácil de usar: O DataSync pode ser facilmente configurado e gerenciado usando o console de gerenciamento da AWS ou a API.
+Casos de uso do AWS DataSync:
+
+Migração de dados para a nuvem: O DataSync pode ser usado para migrar seus dados de armazenamento on-premises para a AWS de forma rápida e segura.
+Replicação de dados entre locais: O DataSync pode ser usado para replicar seus dados entre diferentes locais, on-premises e na nuvem.
+Sincronização de dados entre diferentes serviços de armazenamento: O DataSync pode ser usado para sincronizar seus dados entre diferentes serviços de armazenamento, on-premises e na nuvem.
+Benefícios do AWS DataSync:
+
+Agilidade: O DataSync acelera a transferência de dados entre diferentes serviços de armazenamento.
+Segurança: O DataSync garante a segurança dos seus dados com criptografia em repouso e em trânsito.
+Eficiência: O DataSync automatiza a transferência de dados e reduz o tempo e o esforço necessário para gerenciar suas transferências de dados.
+Escalabilidade: O DataSync pode ser dimensionado para atender às suas necessidades de transferência de dados.
+```
+
+## Baixa capacidade de rede para usa do datasync
+```
+
+Se você não tiver capacidade de transferência suficiente na rede para usar o AWS DataSync, existem algumas alternativas que você pode considerar:
+
+1. Otimizar a transferência de dados:
+
+Reduza o tamanho dos dados: Utilize técnicas de compactação para reduzir o tamanho dos dados que você precisa transferir.
+Transfira dados em horários de menor uso: Transfira seus dados durante períodos de menor uso da rede para evitar congestionamento.
+Ajuste as configurações do DataSync: Ajuste as configurações do DataSync para otimizar o uso da largura de banda.
+2. Use um serviço de transferência de dados offline:
+
+AWS Snowball: O AWS Snowball é um dispositivo de armazenamento físico que você pode usar para transferir dados para a AWS offline.
+AWS Snowcone (ja vem com o agente de sincronização pré instalado): O AWS Snowcone é um dispositivo de armazenamento portátil menor que o Snowball, ideal para transferir volumes menores de dados.
+3. Use uma solução de armazenamento em cache local:
+
+AWS Storage Gateway: O AWS Storage Gateway é um serviço de armazenamento em cache local que pode ser usado para armazenar dados em cache na nuvem e acessá-los localmente.
+4. Aumente a capacidade da sua rede:
+
+Atualize seu hardware de rede: Considere atualizar seu hardware de rede para aumentar a capacidade de transferência.
+Aumente sua largura de banda: Entre em contato com seu provedor de serviços de internet para aumentar a largura de banda da sua conexão.
+5. Use uma combinação de soluções:
+
+Combine o DataSync com outras soluções: Você pode combinar o DataSync com outras soluções, como o AWS Snowball ou o AWS Storage Gateway, para atender às suas necessidades de transferência de dados.
+A melhor solução para você dependerá de suas necessidades específicas e das suas restrições de rede.
+```
 
 
 # Detalhes no exame
