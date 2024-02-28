@@ -1848,6 +1848,25 @@ Ao escolher o tipo de gateway, é importante considerar os requisitos de acesso 
 - caso não tenha um servidor virtual, pode solicitar um servidor virtual on-primeses na aws
 - e configura-loa como um file gateway
 
+# Mensageria
+
+## sqs
+- envio de mensagens no máximo 256kilobyte
+- podemos dimensionar nossas instâncias com base no cloudwatch metric queue length ApproximateNumberOfMessages, ou seja, chegando a um certo volume de msgs
+- aumentar nossas instâncias. (enviará um alarme e acionar o auto-scaling group por exemplo)
+
+### tempo de visibilidade
+- padrão e de 30 segundos
+- o tempo começa a ser contado a partir do recebimento da mensagem pelo consumidor
+- ele tem esse tempo para retornar que processou com sucesso ou não a mensagem
+- caso não retorne nesse tempo, ela será disponibilizada para outro consumidor
+- caso o consumidor identifique que precise de mais tempo, poderá chamar a api ChangeMessageVisibility, para impedir que ela fique disponível novamente e obter mais tempo
+
+### long polling
+- para diminuir as chamadas a fila sqs
+- quando a fila estiver vazia ficamos aguardando um tempo, ate que apareça uma mensagem
+- melhora a latência
+
 
 # Detalhes no exame
 ```
