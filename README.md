@@ -1948,6 +1948,119 @@ A melhor solução para você dependerá de suas necessidades específicas e das
 - quando a fila estiver vazia ficamos aguardando um tempo, ate que apareça uma mensagem
 - melhora a latência
 
+### fila fifo
+- primeira que entra, primeira que sai
+- garante a ordenação, entrega extamente uma vez (remove mensagens duplicadas)
+- tem um limite de throughput de 300msg/s em lote ou 3000/msg s 
+
+### auto-scaling com sqs
+- podemos aumentar o dimensionamento com das ec2 por ex, com base na quantidade de filas pendentes pra consumo
+- fazemos isso definindo um alarme do CloudWatch - queue length (ApproximateNumberOfMessages)
+- que irá triggar o scale
+
+### opções de uso para sqs
+- utilizar como buffer, ex: em vezes de mandar gravar direto na base de dados, dependendo do volume de requisições, colocamos em uma fila e em seguida o consumidor
+- efetuará a inserção
+
+# SNS
+```
+O Amazon Simple Notification Service (Amazon SNS) é um serviço de mensagens totalmente gerenciado fornecido pela Amazon Web Services (AWS). 
+Ele permite que você envie notificações de uma fonte para uma ou mais destinações de forma assíncrona, escalável e altamente disponível.
+
+Funcionamento do Amazon SNS:
+1. **Tópicos**: No SNS, você cria um tópico, que é um ponto de acesso lógico para enviar notificações. 
+Um tópico é identificado por um nome ou um ARN (Amazon Resource Name).
+
+2. **Publicadores**: Os publicadores (aplicativos, serviços ou dispositivos) enviam notificações para um tópico do SNS. 
+Essas notificações podem ser mensagens de texto ou dados binários, como arquivos ou dados de sensor.
+
+3. **Assinantes**: Os assinantes são as destinações que recebem as notificações enviadas para um tópico. 
+Eles podem ser endpoints de serviços AWS (como Amazon SQS, AWS Lambda ou Amazon Kinesis), endereços de email ou aplicativos móveis.
+
+4. **Assinaturas**: Para receber notificações de um tópico, os assinantes devem se inscrever nele. 
+Isso é feito criando uma assinatura, que define o protocolo de entrega (HTTP/HTTPS, email, SMS, etc.) e o endpoint de destino.
+
+5. **Entrega de mensagens**: Quando um publicador envia uma notificação para um tópico, 
+o SNS replica e entrega a mensagem para todos os assinantes inscritos nesse tópico, de acordo com seus protocolos de entrega configurados.
+
+6. **Confirmação de entrega**: O SNS tentará entregar a mensagem até um número configurável de vezes, 
+caso a entrega inicial falhe. Ele também pode ser configurado para armazenar mensagens não entregues em uma fila SQS.
+
+7. **Políticas de acesso**: O SNS permite controlar o acesso aos tópicos e assinaturas através de políticas baseadas em identidade, 
+recursos e condições.
+
+O Amazon SNS é amplamente utilizado em cenários como:
+
+- Notificações de aplicativos móveis
+- Monitoramento e alerta de sistemas
+- Comunicação entre serviços distribuídos
+- Entrega de mensagens de email e SMS
+- Integração com outros serviços AWS (como Lambda, S3, CloudWatch, etc.)
+
+O SNS é altamente escalável, confiável e oferece baixa latência na entrega de mensagens. Ele se
+ integra perfeitamente com outros serviços AWS e é uma solução popular para requisitos de mensagens assíncronas em arquiteturas na nuvem.
+ 
+ obs: sns pode configurar um tipico fifo
+```
+### sns fan-out sqs
+- varias filas sqs, se inscrevam em um topic, quando o sns produzir uma mensagem ao mesmo, todas elas receberam a mensagem
+- e consequentemente todos os consumidores destas filas
+- podemos filtrar mensagens com base na politica, ou seja, o sns recebe a mensagem e direciona para um inscrito(sqs queue por ex), com base nessa filtragem
+
+
+# kinesis
+```
+O Amazon Kinesis é um serviço de streaming de dados fornecido pela Amazon Web Services (AWS). 
+Ele permite coletar, processar e analisar dados em tempo real de diversas fontes, como aplicativos móveis, dispositivos IoT, 
+websites e sistemas de infraestrutura.
+
+O Kinesis é composto por três serviços principais:
+
+1. **Kinesis Data Streams**:
+   - Permite ingestão e processamento de grandes fluxos de dados em tempo real.
+   - Os dados são armazenados temporariamente em shards (partições) e podem ser consumidos por várias aplicações simultaneamente.
+   - Útil para casos de uso como análise de logs, métricas, dados de IoT, eventos de cliques, etc.
+
+2. **Kinesis Data Firehose**:
+   - Serviço para capturar, transformar e carregar dados de streaming em destinos como Amazon S3, Amazon Redshift, Amazon Elasticsearch Service e 
+   serviços de análise de terceiros.
+   - Simplifica o processo de entrega contínua de dados para análises próximas ao tempo real.
+
+3. **Kinesis Data Analytics**:
+   - Permite executar análises SQL ou aplicativos Java em fluxos de dados Kinesis em tempo real.
+   - Útil para casos de uso como detecção de anomalias, enriquecimento de dados, filtragem e amostragem de dados, monitoramento de métricas, etc.
+
+Benefícios do Amazon Kinesis:
+
+- **Processamento de streaming em tempo real**: Capacidade de processar e reagir a dados à medida que eles são gerados, em vez de aguardar o 
+processamento por lotes.
+- **Escalabilidade**: Pode lidar com qualquer volume de dados de streaming, escalando automaticamente para atender às demandas.
+- **Integração com outros serviços AWS**: Integra-se facilmente com serviços como AWS Lambda, Amazon EC2, Amazon S3, Amazon Redshift, AWS IoT e outros.
+- **Durabilidade**: Os dados são armazenados temporariamente em shards, permitindo a repetição de leitura em caso de falha.
+- **Análise em tempo real**: Permite executar análises complexas em dados de streaming em tempo real usando SQL ou Java.
+
+O Amazon Kinesis é amplamente utilizado em casos de uso como monitoramento de aplicativos, análise de logs, processamento de dados de IoT,
+ análise de dados de redes sociais, detecção de fraudes, monitoramento de métricas, entre outros cenários que exigem processamento
+  e análise de dados em tempo real.
+```
+
+### kinesis data stream
+- pode reter as mensagens de 1 a 365 dias
+- desta forma podemos reprocessar os dados
+- uma vez inserido os dados no kinesis, eles não podemo ser excluidos
+- provisioned mode:
+  - colocamos um numero determinado de shards
+  - 1 mg por segundo
+  - ou 2 mg por consumidor
+  - pagamos por shard provisionado
+- on-demand mode:
+  - gerencia a capacidade
+  - por default provisiona 4 mg ou 4000 records por segundo
+   escalona automáticamente baseado nos ultimos 30 dias
+  - pagamos por hora ou entrada por gb
+- é implantado por região
+- autorização com base no iam
+- encripta usando https e rest usando kms
 
 # Detalhes no exame
 ```
