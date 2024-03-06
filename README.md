@@ -2022,7 +2022,9 @@ O Kinesis é composto por três serviços principais:
    - Útil para casos de uso como análise de logs, métricas, dados de IoT, eventos de cliques, etc.
 
 2. **Kinesis Data Firehose**:
-   - Serviço para capturar, transformar e carregar dados de streaming em destinos como Amazon S3, Amazon Redshift, Amazon Elasticsearch Service e 
+   - auto administrador, serveless
+   - pago pelos dados que passam pelo firehose
+   - Serviço para capturar, transformar e carregar dados de streaming em destinos como Amazon S3, Amazon Redshift, Amazon opensearch  e 
    serviços de análise de terceiros.
    - Simplifica o processo de entrega contínua de dados para análises próximas ao tempo real.
 
@@ -2038,6 +2040,7 @@ processamento por lotes.
 - **Integração com outros serviços AWS**: Integra-se facilmente com serviços como AWS Lambda, Amazon EC2, Amazon S3, Amazon Redshift, AWS IoT e outros.
 - **Durabilidade**: Os dados são armazenados temporariamente em shards, permitindo a repetição de leitura em caso de falha.
 - **Análise em tempo real**: Permite executar análises complexas em dados de streaming em tempo real usando SQL ou Java.
+- para deixar ordenado, usamos o particion key para envio dos dados
 
 O Amazon Kinesis é amplamente utilizado em casos de uso como monitoramento de aplicativos, análise de logs, processamento de dados de IoT,
  análise de dados de redes sociais, detecção de fraudes, monitoramento de métricas, entre outros cenários que exigem processamento
@@ -2061,6 +2064,70 @@ O Amazon Kinesis é amplamente utilizado em casos de uso como monitoramento de a
 - é implantado por região
 - autorização com base no iam
 - encripta usando https e rest usando kms
+
+
+## kinesis data stream vs firehose
+```
+A escolha entre Kinesis Data Streams e Kinesis Data Firehose depende dos requisitos específicos do seu caso de uso. 
+Aqui estão algumas diretrizes sobre quando usar cada um:
+
+**Kinesis Data Streams**:
+- Quando você precisa processar dados de streaming em tempo real usando aplicativos de consumo personalizados.
+- Quando você precisa analisar, transformar ou enriquecer os dados antes de armazená-los.
+- Quando você precisa de retenção de dados por um período mais longo (até 7 dias) para reprocessamento ou análise posterior.
+- Quando você precisa de várias aplicações consumindo os mesmos dados simultaneamente.
+- Quando você precisa controlar e dimensionar os recursos de consumo separadamente dos recursos de produção.
+
+**Kinesis Data Firehose**:
+- Quando você deseja simplesmente capturar e enviar dados de streaming diretamente para destinos de armazenamento, como Amazon S3, Amazon Redshift, etc.
+- Quando você não precisa realizar processamento personalizado nos dados antes de armazená-los.
+- Quando você não precisa de retenção de dados por períodos longos, apenas entrega contínua para armazenamento.
+- Quando você não precisa de várias aplicações consumindo os mesmos dados simultaneamente.
+- Quando você deseja um serviço totalmente gerenciado para entrega de dados de streaming, sem se preocupar com o dimensionamento de recursos ou gerenciamento de consumidores.
+
+Em resumo, use o Kinesis Data Streams quando você precisa de processamento em tempo real, retenção de dados, consumidores múltiplos e controle granular sobre os recursos de consumo. Use o Kinesis Data Firehose quando você deseja simplesmente capturar e enviar dados de streaming diretamente para destinos de armazenamento de maneira totalmente gerenciada.
+
+No entanto, esses serviços não são mutuamente exclusivos. Em alguns casos, você pode usar ambos em conjunto, 
+onde o Data Firehose é usado para enviar dados brutos para armazenamento, enquanto o Data Streams
+ é usado para processamento em tempo real e análise desses mesmos dados.
+```
+
+### kinesis x sns x sqs
+```
+Certamente! O Amazon SQS (Simple Queue Service), o Amazon SNS (Simple Notification Service) e o 
+Amazon Kinesis são todos serviços de mensageria da AWS, mas com propósitos e características distintas. Aqui está uma explicação das diferenças entre eles:
+
+**Amazon SQS (Simple Queue Service)**:
+
+- É um serviço de filas de mensagens distribuídas que permite desacoplar e dimensionar componentes de aplicativos.
+- As mensagens são armazenadas em filas e os componentes de aplicativos podem enviar e receber mensagens de forma assíncrona.
+- Garante a entrega de mensagens pelo menos uma vez e mantém as mensagens armazenadas em filas por um período configurável.
+- É adequado para processar cargas de trabalho assíncronas, desacoplar componentes de aplicativos e integrar sistemas distribuídos.
+- É usado para cenários como processamento de tarefas em segundo plano, buffers de mensagens e comunicação assíncrona entre componentes.
+
+**Amazon SNS (Simple Notification Service)**:
+
+- É um serviço de publicação/assinatura (pub/sub) para entrega de mensagens e notificações.
+- Os publicadores enviam mensagens para um tópico SNS, e os assinantes recebem as mensagens desse tópico.
+- Suporta vários protocolos de entrega, como HTTP/HTTPS, email, SMS, AWS Lambda, Amazon SQS e dispositivos móveis.
+- É adequado para enviar notificações em tempo real para vários destinatários, integrar componentes distribuídos e criar fluxos de
+ trabalho orientados a eventos.
+- É usado para cenários como notificações de aplicativos, alertas de monitoramento, comunicação entre microsserviços e entrega de
+ mensagens para dispositivos móveis.
+
+**Amazon Kinesis**:
+
+- É um serviço de streaming de dados que permite coletar, processar e analisar fluxos de dados em tempo real.
+- É composto por três serviços principais: Kinesis Data Streams, Kinesis Data Firehose e Kinesis Data Analytics.
+- Kinesis Data Streams permite ingerir e processar grandes fluxos de dados em tempo real usando aplicativos de consumo personalizados.
+- Kinesis Data Firehose permite capturar e enviar dados de streaming diretamente para destinos de armazenamento, como Amazon S3 e Amazon Redshift.
+- Kinesis Data Analytics permite executar análises SQL ou aplicativos Java em fluxos de dados Kinesis em tempo real.
+- É adequado para casos de uso como análise de logs, métricas, dados de IoT, eventos de cliques, detecção de fraudes e
+ processamento de streaming em tempo real.
+
+Em resumo, o Amazon SQS é usado para enfileirar mensagens e desacoplar componentes de aplicativos, o Amazon SNS é usado para
+ enviar notificações e mensagens para vários destinatários, e o Amazon Kinesis é usado para coletar, processar e analisar fluxos de dados em tempo real. A escolha entre eles depende dos requisitos específicos do seu caso de uso, como entrega garantida de mensagens, processamento em tempo real ou envio de notificações.
+```
 
 # Detalhes no exame
 ```
