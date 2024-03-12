@@ -2129,6 +2129,18 @@ Em resumo, o Amazon SQS é usado para enfileirar mensagens e desacoplar componen
  enviar notificações e mensagens para vários destinatários, e o Amazon Kinesis é usado para coletar, processar e analisar fluxos de dados em tempo real. A escolha entre eles depende dos requisitos específicos do seu caso de uso, como entrega garantida de mensagens, processamento em tempo real ou envio de notificações.
 ```
 
+# Ecs
+- gerenciamento de containers da aws
+- podemos subir containers usando ec2 ou fargate (serverless)
+- ecs e dividio em:
+  - cluster, que pode ter vários services
+  - service, que possui uma task, mas podemos ter varias instancias dela
+  - task e a definição do nosso microservice
+
+## Role perfil ec2 vs role tasks ecs
+- role de perfil, aonde podemos colocar as politicas mais genéricas, utilizadas por todas as tarefas, como"enviar logs, baixar imagem do ecr
+- role de task aonde encontra-se as politicas mais específicas, que o microservice envolvido utilizara, como: salvar informções no dynamodb, s3 e etc
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
