@@ -706,7 +706,26 @@ Habilitar o connection draining é considerado uma boa prática ao criar Auto Sc
   - crie um template
   - crie o asg, vinculando a um target group
   - vincule o tg no seu alb
- 
+```
+O Auto Scaling Group e o Target Group são dois conceitos diferentes, mas relacionados, no contexto do gerenciamento de recursos computacionais na nuvem, especificamente no serviço Amazon Elastic Load Balancing (ELB) e Amazon Elastic Compute Cloud (EC2) da AWS.
+
+Auto Scaling Group (Grupo de Auto Scaling):
+- É um componente do serviço Auto Scaling da AWS, que é responsável por escalar automaticamente os recursos de computação (instâncias EC2) com base em métricas definidas, como a utilização de CPU, tráfego de rede ou métricas personalizadas.
+- Permite que você defina regras para adicionar ou remover instâncias EC2 de acordo com a demanda, garantindo que haja recursos suficientes para atender às cargas de trabalho.
+- O Auto Scaling Group gerencia o ciclo de vida das instâncias EC2, criando novas instâncias quando necessário e terminando instâncias ociosas.
+
+Target Group (Grupo de Destino):
+- É um componente do serviço Elastic Load Balancing (ELB) da AWS, responsável por receber e encaminhar o tráfego de entrada para as instâncias EC2 registradas.
+- Um Target Group é configurado com um protocolo (HTTP, HTTPS, TCP, etc.) e uma porta de destino, para os quais o balanceador de carga encaminhará o tráfego.
+- As instâncias EC2 são registradas no Target Group, e o balanceador de carga distribui o tráfego entre essas instâncias de acordo com o algoritmo de balanceamento de carga configurado.
+
+A correlação entre o Auto Scaling Group e o Target Group é que, geralmente, as instâncias EC2 gerenciadas pelo Auto Scaling Group são registradas no Target Group do Elastic Load Balancing. Dessa forma, quando novas instâncias EC2 são criadas pelo Auto Scaling Group para lidar com o aumento da demanda, elas são automaticamente registradas no Target Group, tornando-se disponíveis para receber tráfego do balanceador de carga.
+
+Por outro lado, quando o Auto Scaling Group termina instâncias EC2 devido à diminuição da demanda, essas instâncias são automaticamente desregistradas do Target Group correspondente.
+
+Essa integração entre o Auto Scaling Group e o Target Group permite que sua arquitetura de aplicação seja escalável e tolerante a falhas, garantindo que haja sempre recursos suficientes para atender à demanda, e que o tráfego seja distribuído de maneira eficiente entre as instâncias disponíveis.
+```
+
 ### politicas de asg
 ```
 Existem vários tipos de políticas de escalabilidade automática na AWS que podemos usar com Auto Scaling groups:
@@ -2140,6 +2159,38 @@ Em resumo, o Amazon SQS é usado para enfileirar mensagens e desacoplar componen
 ## Role perfil ec2 vs role tasks ecs
 - role de perfil, aonde podemos colocar as politicas mais genéricas, utilizadas por todas as tarefas, como"enviar logs, baixar imagem do ecr
 - role de task aonde encontra-se as politicas mais específicas, que o microservice envolvido utilizara, como: salvar informções no dynamodb, s3 e etc
+
+## autoscaling
+- podemos aumentar o número de tasks com base em métricas, onde esta será o gatilho, quando adingido o percentual configurado, para 
+- aumentar ou diminuir
+- as métricas ficariam no cloudwatch  alarm
+
+## integração com o event bridge
+- podemos configurar o amazon eventbridge pra criar uma task dentro do ecs quando:
+  - colocamos um objeto no bucket s3 
+  - quando colocamos um agendamento no evento para criar uma task
+  - quando nossos serviços estão recebendo muita mensagem de uma fila sqs, e o event brige trigga para aumentar o número de tasks (instâncias)
+
+## ECR 
+- repositório de imagens da aws
+- é protegido pelo iam
+- precisamos de roles, no caso para outros serviços, com as politicas certas, caso queria utiliza-lo
+
+# eks
+- gerenciador kubernetes da aws
+- kubernetes e um orquestrador de containers, similar ao ecs
+- ele é agnóstico a nuvem (outros provedores oferecem), ou seja, caso tenha um k8s e queria usar aws, é facil migrar
+- k8s e de código aberto
+- caso queria utilizar um storage, devemos definir o manifesto StorageClass, onde funciona com eks é:
+  - abs
+  - efs (funciona com farget)
+  - fsx for lustre
+  - fsx for netApp ONTAP
+
+# AWS RUN
+- forma mais facil de colocar app na aws usando container
+- usa as boas pŕaticas
+- interface facil para quem não conhece bem aws
 
 # Detalhes no exame
 ```
