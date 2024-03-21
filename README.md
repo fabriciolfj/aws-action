@@ -2192,6 +2192,127 @@ Em resumo, o Amazon SQS é usado para enfileirar mensagens e desacoplar componen
 - usa as boas pŕaticas
 - interface facil para quem não conhece bem aws
 
+
+# Serverless
+- serviços nos quais não precisamos gerenciar ou provicionar servidores
+
+## Beneficios lambda
+- pagamos por execução
+- integra com outros serviços da aws
+- monitoramento pelo cloudwatch
+- posso incrementar ram e cpu
+- dimensionado automaticamente
+
+
+## limits lambda
+- memoria alocação até 10gb
+- maximo execução 15 min
+- variaveis de ambiente no máximo 4jb
+- capacidade disco (funcion container) 10gb
+- execução concorrente 1000
+- para deploy, o arquivo zipado máximo de 50mb
+- depois de descompactado, não pode passar 250mb
+- utiliza directory temp para carregar outros arquivos no startup
+- quando lançamos um lambda, ele e vinculado a uma vpc da aws, e não tem acesso aos recursos dentro do da nossa vpc
+  - outro ponto é o uso de rds proxy para acessar a base de dados (o lambda),
+    - lambda se conecta ao proxy
+    - dessa forma tem melhor escalabilidade no pool de conexões, em vez de conectar direto ao rds
+    - possui failover time e preserva as conexões
+    - força o uso de iam authentication e secrets manager
+
+### lambda vpc e vpc com seus recursos
+```
+Quando você cria uma função Lambda dentro de uma VPC (Virtual Private Cloud) da AWS, ela é executada dentro dessa VPC específica e isolada. Para que essa função Lambda possa acessar recursos (como bancos de dados, servidores, etc.) dentro da sua própria VPC, você precisa configurar corretamente a conectividade entre as duas VPCs.
+
+Existem duas principais opções para permitir que a função Lambda acesse recursos em sua VPC:
+
+1. **VPC Peering**:
+   - O VPC Peering permite criar uma conexão de rede entre duas VPCs, permitindo que os recursos em cada VPC se comuniquem entre si como se estivessem na mesma rede.
+   - Você precisa configurar um VPC Peering entre a VPC da AWS onde a função Lambda está sendo executada e sua própria VPC.
+   - Depois de configurar o VPC Peering, você precisará adicionar regras de entrada às Security Groups dos recursos em sua VPC para permitir o acesso da VPC da AWS.
+
+2. **AWS PrivateLink**:
+   - O PrivateLink permite acessar serviços AWS de forma privada, sem precisar de uma conexão de internet ou atravessar a rede pública da AWS.
+   - Você pode criar um endpoint de VPC para a função Lambda dentro de sua VPC, permitindo que sua função acesse recursos em sua VPC de forma segura e privada.
+   - É necessário configurar uma política de recursos para permitir que a função Lambda acesse os recursos em sua VPC através do endpoint de VPC.
+
+Após configurar a conectividade de rede usando uma dessas opções, você precisará fornecer à sua função Lambda as permissões necessárias para acessar os recursos em sua VPC, como bancos de dados, servidores, etc.
+
+Aqui estão alguns passos gerais para configurar o acesso:
+
+1. Identifique os recursos em sua VPC que a função Lambda precisa acessar (por exemplo, o endpoint de um banco de dados).
+2. Configure a conectividade de rede entre a VPC da AWS e sua própria VPC usando VPC Peering ou PrivateLink.
+3. Adicione regras de entrada às Security Groups dos recursos em sua VPC para permitir o acesso da VPC da AWS.
+4. Forneça as permissões necessárias à função Lambda para acessar os recursos em sua VPC (por exemplo, através de políticas de IAM).
+5. Configure a função Lambda com as informações de conexão necessárias (como endpoints, credenciais, etc.) para se comunicar com os recursos em sua VPC.
+
+É importante lembrar que a configuração adequada da conectividade de rede e das permissões é crucial para garantir que a função Lambda possa acessar seus recursos de forma segura e eficiente.
+```
+
+### lambda rds
+```
+Conectar uma função Lambda ao Amazon RDS Proxy em vez de se conectar diretamente ao Amazon RDS oferece alguns benefícios importantes em termos de segurança, escalabilidade e gerenciamento de conexões. Aqui está como funciona e os principais benefícios:
+
+**Como funciona**:
+
+1. O RDS Proxy atua como um proxy de banco de dados, posicionando-se entre a aplicação (no caso, a função Lambda) e o banco de dados RDS.
+2. A função Lambda estabelece uma conexão com o endpoint do RDS Proxy em vez de se conectar diretamente ao endpoint do RDS.
+3. O RDS Proxy gerencia um pool de conexões de banco de dados e reutiliza conexões existentes sempre que possível.
+4. Quando uma nova conexão é necessária, o RDS Proxy estabelece uma conexão com o banco de dados RDS e a encaminha para a função Lambda.
+
+**Benefícios**:
+
+1. **Segurança aprimorada**: Ao se conectar através do RDS Proxy, a função Lambda não precisa ter acesso direto ao endpoint do RDS, reduzindo a superfície de ataque.
+
+2. **Controle de acesso refinado**: O RDS Proxy permite controlar com mais granularidade quais funções Lambda ou aplicações podem acessar o banco de dados, usando credenciais de banco de dados específicas.
+
+3. **Gerenciamento de conexões aprimorado**: O RDS Proxy gerencia um pool de conexões de banco de dados, reutilizando conexões existentes quando possível e abrindo novas conexões somente quando necessário. Isso ajuda a evitar problemas de esgotamento de conexões, especialmente em cargas de trabalho com picos.
+
+4. **Escalabilidade aprimorada**: O RDS Proxy pode lidar com um grande número de conexões simultâneas e solicitar automaticamente novos recursos de computação para acomodar a demanda adicional.
+
+5. **Failover e failover automático**: O RDS Proxy pode detectar falhas no banco de dados primário e alternar automaticamente para uma instância de banco de dados em espera, sem exigir alterações nas aplicações do cliente.
+
+6. **Monitoramento e logs aprimorados**: O RDS Proxy fornece métricas e logs detalhados sobre o uso de conexões, desempenho e outras informações úteis para monitoramento e solução de problemas.
+
+Em resumo, conectar uma função Lambda ao RDS Proxy em vez de se conectar diretamente ao RDS oferece benefícios significativos em termos de segurança, gerenciamento de conexões, escalabilidade, failover automático e monitoramento. Embora adicione uma camada adicional, o RDS Proxy pode ajudar a simplificar o gerenciamento de conexões de banco de dados e fornecer uma experiência mais robusta e escalonável para aplicações sem servidor, como as funções Lambda.
+``
+
+## lambda snapstart
+- aumentar a performance 10x para lambda feita em java
+  - ele ja deixa o lambda pre iniciado 
+
+## lambda@edge vs cloudfront functions
+```
+Certamente! O AWS Lambda@Edge e as CloudFront Functions são recursos da AWS que permitem executar código personalizado em resposta a eventos que ocorrem na edge (borda) da rede de entrega de conteúdo (CDN) da AWS, a CloudFront.
+
+**AWS Lambda@Edge**:
+
+O Lambda@Edge permite executar funções Lambda em resposta a eventos CloudFront, como a requisição de um objeto, a visualização de um objeto ou a resposta de um objeto. Isso permite personalizar o comportamento da CDN em tempo de execução.
+
+Alguns casos de uso comuns para o Lambda@Edge incluem:
+
+1. **Manipulação de Conteúdo**: Modificar o conteúdo servido pela CloudFront, como inserir/remover cabeçalhos HTTP, reescrever URLs, otimizar imagens, entre outros.
+2. **Segurança Aprimorada**: Implementar controles de segurança adicionais, como proteção contra bots, filtragem de solicitações maliciosas, autenticação e autorização personalizadas.
+3. **Roteamento Inteligente**: Redirecionar solicitações com base em condições personalizadas, como dispositivo, localização geográfica ou outros fatores.
+4. **Monitoramento e Logs**: Registrar e monitorar solicitações e respostas da CloudFront para análise e depuração.
+
+**CloudFront Functions**:
+
+As CloudFront Functions são um recurso mais recente e simplificado em comparação com o Lambda@Edge. Elas permitem executar código leve em tempo de execução durante o processamento de solicitações na borda da CloudFront, sem a necessidade de provisionar e gerenciar funções Lambda separadas.
+
+As CloudFront Functions são mais adequadas para casos de uso simples, como:
+
+1. **Manipulação de Cabeçalhos HTTP**: Adicionar, remover ou modificar cabeçalhos HTTP nas solicitações e respostas.
+2. **Reescrita de URLs**: Redirecionar solicitações com base em padrões de URL.
+3. **Filtragem de Solicitações**: Bloquear ou permitir solicitações com base em critérios simples, como cabeçalhos, parâmetros de consulta ou a presença de cookies.
+
+As CloudFront Functions são escritas em um subconjunto de JavaScript e executadas diretamente na edge da CloudFront, tornando-as mais leves e rápidas do que as funções Lambda@Edge.
+
+Em resumo, tanto o Lambda@Edge quanto as CloudFront Functions permitem personalizar o comportamento da CDN da AWS com código personalizado. O Lambda@Edge é mais poderoso e flexível, permitindo a execução de lógica mais complexa, enquanto as CloudFront Functions são mais simples e adequadas para casos de uso mais básicos.
+
+A escolha entre os dois depende das necessidades específicas do seu caso de uso, considerando a complexidade do código necessário, os requisitos de desempenho e a facilidade de manutenção.
+```
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
