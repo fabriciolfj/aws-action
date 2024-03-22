@@ -2275,7 +2275,7 @@ Conectar uma função Lambda ao Amazon RDS Proxy em vez de se conectar diretamen
 6. **Monitoramento e logs aprimorados**: O RDS Proxy fornece métricas e logs detalhados sobre o uso de conexões, desempenho e outras informações úteis para monitoramento e solução de problemas.
 
 Em resumo, conectar uma função Lambda ao RDS Proxy em vez de se conectar diretamente ao RDS oferece benefícios significativos em termos de segurança, gerenciamento de conexões, escalabilidade, failover automático e monitoramento. Embora adicione uma camada adicional, o RDS Proxy pode ajudar a simplificar o gerenciamento de conexões de banco de dados e fornecer uma experiência mais robusta e escalonável para aplicações sem servidor, como as funções Lambda.
-``
+```
 
 ## lambda snapstart
 - aumentar a performance 10x para lambda feita em java
@@ -2312,6 +2312,113 @@ Em resumo, tanto o Lambda@Edge quanto as CloudFront Functions permitem personali
 
 A escolha entre os dois depende das necessidades específicas do seu caso de uso, considerando a complexidade do código necessário, os requisitos de desempenho e a facilidade de manutenção.
 ```
+
+# Dynamodb
+- o banco de dados ja existe, criamos apenas tabelas
+- a tabela tem uma primary key, que pode ser composta por chave + range
+- podemos ter tambem indexes locais, onde a chave é igual a chave da primary key, mas um range diferente
+- podemos ter indexes secundarios, onde c chave primary e o range, são diferentes da primary key.
+- temos os modes de capacidade de Reqd/write
+  - provisioned mode: determinamos quanto de escrita e leitura por segundo, ideal quanto temos uma previsibilidade e economia de custos.
+  - on-demand mode: não precisamos nos planejar, ideal quando temos uma variação grande de escrita/leitura, pagamos por leitura/gravação
+
+## DAX dynamodb accelerator
+- cache gerenciado, para dynamodb
+- ideal quando temos muitas leituras, afim de mitigar o tempo de resposta
+- por padrão o ttl é de 5 min
+- latencia de segundos
+- não precisamos mudar nada na nossa app
+- 
+
+## dynamodbDB stream processing
+```
+O DynamoDB Streams é um recurso do Amazon DynamoDB que captura um feed de log sequencial de todas as modificações (criação, atualização e exclusão) feitas em uma tabela do DynamoDB. Ele permite que você capture essas alterações na tabela e replique os dados para outro sistema, como um sistema de processamento de dados ou um data lake, de forma assíncrona e em tempo real.
+
+O DynamoDB Streams funciona da seguinte maneira:
+
+1. **Habilitação de Streams**: Ao criar ou atualizar uma tabela do DynamoDB, você pode habilitar o DynamoDB Streams para essa tabela. Você também pode habilitar ou desabilitar os Streams em tabelas existentes a qualquer momento.
+
+2. **Captura de Alterações**: Sempre que um item é adicionado, modificado ou removido da tabela habilitada para Streams, o DynamoDB captura essas alterações e as grava em um log de Streams associado à tabela.
+
+3. **Estrutura do Registro de Streams**: Cada registro de Streams contém informações sobre a operação realizada (inserção, modificação ou remoção), o código de partição e a chave de classificação do item, bem como a imagem completa do item antes e depois da operação.
+
+4. **Consumo de Streams**: Você pode consumir os registros de Streams usando serviços da AWS, como o AWS Lambda, o Amazon Kinesis, ou seu próprio aplicativo personalizado. O consumo de Streams pode ser feito de forma síncrona (processando registros individuais à medida que chegam) ou assíncrona (processando lotes de registros em intervalos regulares).
+
+5. **Processamento Adicional**: Depois de consumir os registros de Streams, você pode executar tarefas adicionais, como armazenar os dados em um data lake, realizar análises em tempo real, disparar notificações ou atualizar outros sistemas.
+
+Os casos de uso comuns para o DynamoDB Streams incluem:
+
+1. **Replicação de Dados**: Replicar dados do DynamoDB para outros sistemas de armazenamento ou processamento de dados, como o Amazon Redshift, o Amazon Elasticsearch Service ou o Amazon S3.
+
+2. **Processamento de Eventos**: Disparar ações ou fluxos de trabalho com base em alterações nos dados do DynamoDB, como enviar notificações, atualizar caches ou executar lógica de negócios.
+
+3. **Análise de Dados**: Processar os dados de alterações do DynamoDB em tempo real para fins de análise, como análise de tendências, detecção de fraudes ou geração de relatórios.
+
+4. **Integração de Sistemas**: Manter outros sistemas atualizados com as alterações no DynamoDB, permitindo a sincronização de dados entre sistemas diferentes.
+
+O DynamoDB Streams oferece uma maneira eficiente e escalável de capturar e processar alterações de dados em tempo real, sem a necessidade de sondagem periódica ou rastreamento manual de alterações. Ele é especialmente útil em cenários onde é necessário replicar dados, reagir a eventos ou executar processamento de dados em tempo real com base nas alterações no DynamoDB.
+```
+
+## tabelas globais
+```
+O DynamoDB Global Tables é um recurso que permite replicar uma tabela do DynamoDB em várias regiões da AWS de forma transparente, proporcionando uma experiência de replicação multinacional completa, gerenciada e altamente disponível. Isso permite que você execute aplicativos globalmente distribuídos com latência de leitura e gravação baixa para os usuários finais.
+
+Aqui estão alguns detalhes importantes sobre as Tabelas Globais do DynamoDB:
+
+1. **Replicação entre regiões**: As Tabelas Globais replicam automaticamente os dados entre as regiões selecionadas, mantendo-os sincronizados. Você pode especificar quais regiões deseja que sua tabela seja replicada.
+
+2. **Tabela totalmente operacional**: Cada réplica de tabela em uma região diferente é uma tabela do DynamoDB totalmente operacional. Você pode executar leituras e gravações em qualquer réplica da tabela.
+
+3. **Consistência eventual**: As Tabelas Globais fornecem consistência eventual entre as replicações regionais. Isso significa que, após uma atualização em uma região, há um atraso antes que a alteração seja visível em outras regiões.
+
+4. **Chaves de tabela idênticas**: Todas as réplicas de uma Tabela Global compartilham o mesmo esquema de chave de tabela. No entanto, você pode definir outras configurações, como configurações de capacidade de leitura/gravação e índices secundários, de forma independente para cada réplica.
+
+5. **Failover transparente**: Se uma região falhar, o DynamoDB poderá redirecionar automaticamente o tráfego para outra região replicada, garantindo alta disponibilidade.
+
+6. **Compatibilidade com outros recursos do DynamoDB**: As Tabelas Globais são compatíveis com outros recursos do DynamoDB, como Streams, Acelerador DAX, Backup e Restauração, Rastreamento de Objetos e Encriptação.
+
+Os casos de uso comuns para as Tabelas Globais incluem:
+
+1. **Aplicativos globais**: Para aplicativos que precisam ser implantados globalmente, as Tabelas Globais permitem que os usuários de diferentes regiões acessem os dados com baixa latência.
+
+2. **Alta disponibilidade**: Com réplicas em várias regiões, as Tabelas Globais fornecem alta disponibilidade e tolerância a falhas regionais.
+
+3. **Conformidade local**: Para atender a requisitos regulatórios ou de conformidade, os dados podem ser mantidos dentro de uma região específica.
+
+4. **Replicação de dados**: As Tabelas Globais podem ser usadas para replicar dados entre regiões para fins de backup, recuperação de desastres ou análise.
+
+Embora as Tabelas Globais forneçam capacidades poderosas, é importante observar que elas podem incorrer em custos adicionais, uma vez que você está mantendo várias réplicas de seus dados em diferentes regiões. No entanto, para aplicativos globais ou com requisitos de alta disponibilidade, as Tabelas Globais do DynamoDB podem ser uma solução valiosa.
+```
+# api gateway aws
+````
+O Amazon API Gateway é um serviço gerenciado pela AWS que permite criar, publicar, manter, monitorar e proteger APIs RESTful e WebSocket na nuvem. Ele atua como uma "porta de entrada" para aplicativos, permitindo que eles acessem dados, funções de negócios ou recursos de back-end, como:
+
+- Serviços AWS (Lambda, DynamoDB, entre outros)
+- Servidores HTTP/HTTPS em nuvem privada ou local
+- Serviços web públicos
+
+Aqui estão algumas das principais características e benefícios do API Gateway:
+
+1. **Proxy Reverso**: Atua como um proxy reverso, recebendo solicitações de API dos clientes, as encaminha para os serviços de back-end apropriados e retorna as respostas.
+
+2. **Mapeamento e Transformação de Dados**: Permite mapear solicitações e respostas entre formatos diferentes, como JSON para XML ou vice-versa.
+
+3. **Controle de Acesso**: Fornece mecanismos de autenticação e autorização, como chaves de API, autenticação do AWS IAM, autenticação baseada em token, etc.
+
+4. **Cached de Resposta**: Pode armazenar em cache respostas de back-end para melhorar o desempenho.
+
+5. **Monitoramento e Logs**: Oferece logs detalhados e métricas para monitoramento e rastreamento de chamadas de API.
+
+6. **SDK Geração e Documentação Swagger**: Gera SDKs cliente e documentação Swagger para simplificar a integração com seus aplicativos cliente.
+
+7. **Versionamento de API**: Permite implantar novos estágios ou versões de uma API sem interrupções.
+
+8. **WebSocket APIs**: Suporta APIs WebSocket para aplicativos em tempo real, além das APIs RESTful.
+
+9. **Integração Sem Servidor**: Integra-se perfeitamente com o AWS Lambda e outros serviços AWS sem servidor.
+
+Usando o API Gateway, você pode criar uma camada lógica consistente e escalável para expor serviços back-end através de APIs bem definidas, gerenciar o tráfego de API, aplicar políticas de segurança e transformar dados, entre outros benefícios. É uma parte fundamental da arquitetura de microsserviços e APIs na AWS.
+````
 
 # Detalhes no exame
 ```
