@@ -1580,10 +1580,12 @@ Então o CORS provê uma forma segura dos navegadores permitirem requests de ori
   - crio um access point, bate no lambda, que pega o o objeto, transforma em json, retorna para o access point que por sua vez, o solicitante o recebe 
 
 
-# Aws cloud front
+# Aws cloudfront
 - CDN - content delivery network
 
 ```
+O Amazon CloudFront é um serviço rápido de rede de entrega de conteúdo (CDN) que entrega dados, vídeos, aplicativos e APIs com segurança a clientes em todo o mundo com baixa latência e altas velocidades de transferência. 
+O Amazon CloudFront pode ser usado na frente de um Application Load Balancer.
 CDN (Content Delivery Network) é uma rede distribuída de servidores que entrega conteúdo estático (como imagens, vídeos, arquivos CSS e JavaScript) aos 
 usuários com base na sua localização geográfica. A ideia principal de um CDN é fornecer conteúdo de forma mais rápida e eficiente aos usuários finais.
 
