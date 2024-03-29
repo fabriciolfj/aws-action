@@ -2452,7 +2452,32 @@ User Pools: Permite gerenciar um diretório de usuários e fornecer recursos de 
 Identity Pools: Permite obter credenciais de acesso temporárias para autenticar usuários e acessar recursos da AWS, como o Amazon S3 ou o DynamoDB. As Identity Pools suportam diferentes provedores de identidade, como User Pools, provedores de identidade social ou identidades de contas da AWS.
 federado : para acessar diretamente recursos da aws, como s3
 ```
+# Banco de dados da aws, e quando utiliza-los
+## RDS
+- nos provisionamos os storages
+- suporte a read replicas e multi az (alta disponibilidade)
+- segurança por iam, kms 
+- pode configurar para realizar backups automaticos (35 dias) ou manual por mais tempo
+- temos manutencoes que causa indisponibilidade
+- suporte iam e integracao com secretmanager
 
+## elastiCache 
+- baixa latencia, armazena em memotira
+- motor redis, multi az e replicas de leitura
+- suporte a iam, security groups, kms, e redis auth
+- necessita modificar a aplicação para uso
+- key/value store
+- armazenar sessoes de um website
+- muita leitura abaixa escrita
+
+## aurora
+- compativel com postgres/mysql
+- possui auto-scaling
+- altamente disponivel (6 replicas across 3 azs)
+- endpoints para escrita e leitura diferentes
+- serverless, nao precisamos planejar aumento de recurso, ele é auto escalavel
+- case de uso: menos manutencao, mais flexibilidade, mais performance, mais recursos
+- 16 read instancias em cada regiao
 
 # Detalhes no exame
 ```
