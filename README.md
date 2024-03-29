@@ -2479,6 +2479,21 @@ federado : para acessar diretamente recursos da aws, como s3
 - case de uso: menos manutencao, mais flexibilidade, mais performance, mais recursos
 - 16 read instancias em cada regiao
 
+## dynamodb
+- baixa latencia
+- fornecimento em auto escala
+- temos a capacidade sob demanda ou provicionado
+- pode substituir o elastic search, para armazenar key/value
+- possuimos o ttl para tempo de via do objeto
+- autamente disponivel, multi az por default, leitura e escrita sao desacopladas
+- dax para cache, proporcionando baixa latencia na leitura
+- iam 
+- processamento de ecentos (event processing), integra com lambda kinesis data streams
+- backups automaticos, ponto no tempo de ate 35 dias
+- podemos exportar os dados da tabela para s3
+- flexivel
+- ideal quando armazemos dados pequenos
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
