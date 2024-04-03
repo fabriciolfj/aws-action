@@ -2645,6 +2645,34 @@ O OpenSearch Service pode ser facilmente integrado com outros serviços AWS, com
 Com sua escalabilidade, desempenho e recursos avançados de pesquisa e análise, o Amazon OpenSearch Service é amplamente utilizado por empresas de todos os setores para obter insights valiosos em tempo real a partir de grandes volumes de dados.
 ```
 
+# EMR
+```
+O Amazon EMR (Elastic MapReduce) é um serviço de cluster gerenciado da AWS, usado principalmente para processamento de big data em larga escala.
+
+O EMR utiliza o framework de software livre Apache Hadoop, juntamente com outras ferramentas de big data como Apache Spark, HBase, Presto, Flink e muitas outras. Ele simplifica o provisionamento e o gerenciamento de clusters Hadoop/Spark, permitindo que você se concentre na análise de dados, em vez de se preocupar com a configuração e manutenção da infraestrutura subjacente.
+
+Aqui estão algumas informações importantes sobre o Amazon EMR:
+
+**Recursos principais:**
+- Provisionamento rápido de clusters Hadoop/Spark de qualquer tamanho
+- Integração com outros serviços da AWS, como S3, DynamoDB, RDS, etc.
+- Suporte para vários aplicativos de big data, como Hive, Pig, HBase, Impala, etc.
+- Escalabilidade automática de clusters com base na demanda
+- Integração com ferramentas de monitoramento e logs da AWS
+- Opções de segurança avançadas, como criptografia de dados, autenticação Kerberos, etc.
+
+**Casos de uso comuns:**
+1. **Processamento de dados**: Executar trabalhos de ETL (Extract, Transform, Load) e processamento de dados em larga escala em conjuntos de dados massivos.
+2. **Análise de big data**: Executar análises complexas e mineração de dados em grandes volumes de dados estruturados e não estruturados.
+3. **Machine Learning**: Treinar modelos de machine learning em conjuntos de dados massivos usando Apache Spark MLlib ou outras bibliotecas.
+4. **Streaming de dados**: Processamento de streaming de dados em tempo real usando Apache Spark Streaming, Apache Flink ou Apache Kafka.
+5. **Geração de relatórios**: Executar consultas SQL complexas e geração de relatórios em grandes conjuntos de dados usando Apache Hive ou Presto.
+
+O Amazon EMR é amplamente utilizado por empresas em setores como finanças, telecomunicações, varejo, mídia, jogos, manufatura e muitos outros, que precisam processar e analisar grandes quantidades de dados de maneira eficiente e escalável.
+
+Com sua integração perfeita com outros serviços da AWS, como Amazon S3 para armazenamento de dados e Amazon EC2 para computação, o EMR oferece uma solução poderosa e gerenciada para cargas de trabalho de big data de todos os tipos e tamanhos.
+```
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
