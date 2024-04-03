@@ -2608,6 +2608,43 @@ O Amazon Redshift é um serviço de data warehouse totalmente gerenciado da AWS,
 O Amazon Redshift é amplamente utilizado por empresas que precisam analisar grandes volumes de dados de forma rápida e eficiente. Combinado com outros serviços da AWS, como S3, Glue e Spectrum, ele oferece uma solução poderosa e escalável para data warehousing e análise de big data.
 ```
 
+# openSearch
+```
+O Amazon OpenSearch Service é um serviço de pesquisa e análise de dados gerenciado, baseado na solução de código aberto OpenSearch (anteriormente conhecido como Amazon Elasticsearch Service).
+
+O OpenSearch é uma ramificação da última versão de código aberto do Elasticsearch antes de ser transferido para a Elastic sob uma licença proprietária. Ele fornece recursos avançados de pesquisa, análise de logs, monitoramento e visualização de dados.
+
+Aqui estão algumas informações importantes sobre o Amazon OpenSearch Service:
+
+**Recursos principais**:
+- Mecanismo de pesquisa distribuído e escalável
+- Análise de texto completo e pesquisa em tempo real
+- Visualização de dados com Kibana
+- Integração com outros serviços AWS como Kinesis, Lambda, IoT, etc.
+- Recursos de segurança, como controle de acesso refinado, criptografia, etc.
+- Monitoramento e gerenciamento de clusters OpenSearch
+
+**Casos de uso comuns**:
+
+1. **Análise de logs**: Analisar e obter insights de logs de aplicativos, servidores, sensores IoT, etc. em tempo real.
+2. **Pesquisa de aplicativos**: Fornecer recursos de pesquisa de texto completo em aplicativos web, móveis e corporativos.
+3. **Monitoramento de infraestrutura**: Monitorar métricas e logs de recursos de infraestrutura, como servidores, redes e contêineres.
+4. **Análise de segurança**: Detectar ameaças de segurança analisando logs de sistemas, firewalls e outras fontes.
+5. **Analytics de negócios**: Analisar dados de negócios, como vendas, clientes, operações, para obter insights valiosos.
+6. **Pesquisa de sites**: Fornecer recursos de pesquisa de texto completo e experiências de pesquisa avançadas em sites.
+
+**Integração com outros serviços AWS**:
+O OpenSearch Service pode ser facilmente integrado com outros serviços AWS, como:
+- Kinesis Data Streams/Firehose para streaming de dados
+- Lambda para processamento de dados
+- CloudWatch para monitoramento
+- IoT Core para streaming de dados de sensores
+- S3 para armazenamento de dados
+- And muitos outros serviços
+
+Com sua escalabilidade, desempenho e recursos avançados de pesquisa e análise, o Amazon OpenSearch Service é amplamente utilizado por empresas de todos os setores para obter insights valiosos em tempo real a partir de grandes volumes de dados.
+```
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
