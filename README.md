@@ -2494,6 +2494,120 @@ federado : para acessar diretamente recursos da aws, como s3
 - flexivel
 - ideal quando armazemos dados pequenos
 
+## documentDB
+- versão do aurora para mongodb
+- replicação em 3 zonas de disponibilidades
+- incrementos ate 10db
+- serveless
+- trabalha automaticamente com milhoes de requisicoes por segundo
+
+## amazon neptune
+- banco de dados com base em graphs
+- multi az
+- baixa latencia
+- ideal para recomendacao, rede social, fraudes e etc
+
+## amazon keyspaces
+- apache cassandra gerenciado pela aws
+- tabelas sao replicadas 3 multi az
+- serveless
+- capacidade on demand ou provicionado
+
+## amazon qldb
+- quantum leadger database
+- ideal para transacoes financeiros
+- qualquer entrar nao pode ser modificada ou removida, existe uma cryptografia que verifica
+- multaz sua replicacao
+- 2-3x mais rapida, usando sql
+
+## amazon timestream
+```
+O Amazon Timestream é um serviço de banco de dados de séries temporais gerenciado, oferecido pela AWS. Ele foi projetado especificamente para coletar, armazenar e processar eficientemente trilhões de eventos de séries temporais por dia, como dados de IoT, DevOps e telemetria. Aqui estão algumas informações importantes sobre o Amazon Timestream:
+
+**O que é um banco de dados de séries temporais?**
+
+Um banco de dados de séries temporais é otimizado para armazenar e processar dados que são indexados por tempo, como métricas de monitoramento, logs de aplicativos, dados de sensores IoT e eventos de dispositivos. Esses dados são coletados de forma contínua e em grandes volumes, tornando necessário um sistema especializado para gerenciá-los de forma eficiente.
+
+**Principais recursos do Amazon Timestream:**
+
+1. **Armazenamento escalável**: O Timestream pode armazenar trilhões de eventos, escalonando automaticamente para lidar com cargas de trabalho pesadas.
+2. **Ingestão de dados rápida**: Pode ingerir milhões de eventos por segundo com baixa latência.
+3. **Consultas eficientes**: Suporta consultas SQL avançadas para análise em tempo real de dados de séries temporais.
+4. **Integração nativa com o AWS IoT**: Integra-se facilmente com o AWS IoT Core para ingestão de dados de dispositivos IoT.
+5. **Baixo custo**: O custo é baseado na quantidade de dados armazenados e consultados, sem cobrança por provisionamento de capacidade.
+
+**Casos de uso do Amazon Timestream:**
+
+1. **Monitoramento de IoT**: Coletar e analisar dados de telemetria de dispositivos IoT em tempo real para detecção de anomalias, manutenção preditiva e otimização de processos.
+2. **Monitoramento de infraestrutura**: Armazenar e analisar métricas de desempenho de infraestrutura, como logs de aplicativos, métricas de rede e de servidores, para monitoramento e solução de problemas.
+3. **Análise de séries temporais**: Realizar análises complexas em dados de séries temporais, como previsão, detecção de padrões e correlações em dados de sensores industriais ou financeiros.
+4. **Monitoramento de DevOps**: Coletar e analisar métricas e logs de aplicativos em nuvem para monitoramento de desempenho, rastreamento de problemas e otimização de recursos.
+5. **Análise de dados de jogos**: Armazenar e analisar dados de telemetria de jogos, como eventos de jogadores, comportamentos e métricas de desempenho.
+
+O Amazon Timestream é uma solução escalável e otimizada para lidar com grandes volumes de dados de séries temporais, permitindo análises em tempo real e tomadas de decisões baseadas em insights derivados desses dados. Ele é amplamente utilizado em casos de uso de IoT, monitoramento de infraestrutura, análise de dados e DevOps, onde a eficiência e o desempenho na ingestão e processamento de dados de séries temporais são cruciais.
+```
+
+# Athena
+```
+O Amazon Athena é um serviço de consulta ad-hoc serverless da Amazon Web Services (AWS) que permite analisar dados armazenados em diferentes fontes, como Amazon S3, sem a necessidade de configurar ou gerenciar clusters dedicados. Com o Athena, você pode usar SQL padrão para consultar dados diretamente de diferentes formatos de dados, como CSV, JSON, Apache Parquet, Apache ORC e outros. Aqui estão alguns casos de uso comuns para o Amazon Athena:
+
+1. **Análise de Logs**: O Athena é amplamente utilizado para analisar logs de serviços AWS, como logs de CloudTrail, VPC Flow Logs, ELB Logs, entre outros. Isso permite obter insights valiosos sobre o uso dos recursos, atividades de segurança e solução de problemas.
+
+2. **Business Intelligence (BI)**: Como o Athena pode consultar dados estruturados e semi-estruturados armazenados no Amazon S3, é possível usá-lo para análises de BI em conjuntos de dados de diferentes fontes, como dados de vendas, marketing, finanças, etc.
+
+3. **Processamento de Dados ETL (Extract, Transform, Load)**: O Athena pode ser usado em pipelines de ETL para extrair, transformar e carregar dados de várias fontes antes de serem carregados em um data warehouse ou sistema de análise.
+
+4. **Consultas Ad-hoc**: Como o Athena é um serviço serverless, é muito útil para executar consultas ad-hoc em grandes conjuntos de dados sem a necessidade de provisionar e gerenciar infraestrutura.
+
+5. **Integração com outros serviços AWS**: O Athena pode ser facilmente integrado com outros serviços AWS, como AWS Glue, AWS Lambda, Amazon QuickSight, etc., para criar soluções de análise de dados robustas.
+
+6. **Análise de dados de streaming**: O Athena pode ser usado para analisar dados de streaming armazenados no Amazon Kinesis Data Streams ou Data Firehose.
+
+7. **Consultas federadas**: Com o recurso de consultas federadas do Athena, você pode consultar dados em diferentes fontes de dados, como relacional, NoSQL e fontes de dados personalizadas.
+
+A principal vantagem do Amazon Athena é que você paga apenas pelos dados consultados, sem a necessidade de provisionar e gerenciar infraestrutura dedicada. Isso o torna uma opção econômica e escalável para análise de dados ad-hoc em grandes conjuntos de dados armazenados no Amazon S3.
+```
+
+# redshift
+```
+O Amazon Redshift é um serviço de data warehouse totalmente gerenciado da AWS, projetado para processamento analítico de dados em grande escala. Aqui estão algumas informações importantes sobre o Redshift, snapshots, casos de uso e como integrar dados nele:
+
+**Amazon Redshift**:
+- É um data warehouse de petabyte-scale, otimizado para cargas de trabalho analíticas e relatórios.
+- Utiliza armazenamento de dados colunar e processamento massivamente paralelo (MPP) para obter alto desempenho.
+- Oferece consultas SQL rápidas sobre dados estruturados e semi-estruturados.
+- Pode ser dimensionado para lidar com grandes quantidades de dados, começando com apenas alguns nós.
+
+**Snapshots do Redshift**:
+- Os snapshots são backups incrementais dos dados em um cluster Redshift.
+- Capturam apenas os blocos de dados que foram alterados desde o snapshot anterior.
+- Permitem restaurar um cluster para um ponto específico no tempo.
+- Podem ser agendados automaticamente ou criados manualmente.
+- Os snapshots são armazenados em Amazon S3 de forma durável.
+
+**Casos de uso comuns**:
+- Análise de dados para business intelligence (BI).
+- Data warehousing para aplicativos analíticos e dashboards.
+- Relatórios operacionais e estratégicos.
+- Mineração de dados e análise preditiva.
+- Processamento de ETL (Extract, Transform, Load) em larga escala.
+
+**Integração de dados no Redshift**:
+- Carregando dados de fontes como Amazon S3, DynamoDB, RDS e outros sistemas.
+- Usando ferramentas de ETL/ELT como AWS Glue, Data Pipeline ou soluções de terceiros.
+- Configurando pipelines de dados para alimentar continuamente o Redshift.
+- Usando o recurso de COPY para carregar dados de forma paralela e eficiente.
+
+**Redshift Spectrum**:
+- É um recurso que permite consultar dados diretamente no Amazon S3, sem precisar carregar os dados no cluster Redshift.
+- Expande o data warehouse para dados no data lake em S3.
+- Suporta formatos abertos como CSV, JSON, Parquet, etc.
+- Permite consultasSQL sobre dados estruturados e semi-estruturados no S3.
+- Aproveita o poder de processamento do Redshift para analisar dados massivos no S3.
+
+O Amazon Redshift é amplamente utilizado por empresas que precisam analisar grandes volumes de dados de forma rápida e eficiente. Combinado com outros serviços da AWS, como S3, Glue e Spectrum, ele oferece uma solução poderosa e escalável para data warehousing e análise de big data.
+```
+
 # Detalhes no exame
 ```
 Você tem um site estático hospedado em um bucket S3. Você criou uma distribuição do CloudFront que aponta para seu bucket S3 para atender melhor às suas solicitações e melhorar o desempenho. Depois de um tempo, você percebeu que os usuários ainda podem acessar seu site diretamente do bucket S3. Você deseja forçar os usuários a acessar o site somente por meio do CloudFront. Como você conseguiria isso?
